@@ -40,23 +40,23 @@ const Modal = ({
       
       {/* Modal */}
       <div className={cn(
-        'relative bg-white rounded-lg shadow-xl w-full',
+        'relative bg-white dark:bg-gray-800 rounded-lg shadow-xl dark:shadow-gray-900/50 w-full',
         sizes[size],
         'animate-fadeIn'
       )}>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
-          <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition"
+            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-gray-700 dark:text-gray-200" />
           </button>
         </div>
         
         {/* Content */}
-        <div className="p-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+        <div className="p-4 max-h-[calc(100vh-200px)] overflow-y-auto text-gray-700 dark:text-gray-200">
           {children}
         </div>
       </div>

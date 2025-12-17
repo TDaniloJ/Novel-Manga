@@ -379,8 +379,8 @@ const Profile = () => {
       <div className="lg:col-span-2">
         <Card className="p-6">
           <div className="flex items-center gap-6 mb-6">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 border-4 border-white shadow-lg">
+              <div className="relative">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-4 border-white dark:border-gray-800 shadow-lg">
                 {user?.avatar_url ? (
                   <img
                     src={getImageUrl(user.avatar_url)}
@@ -395,18 +395,18 @@ const Profile = () => {
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">{user?.username}</h2>
-              <p className="text-gray-600">{ROLE_LABELS[user?.role]}</p>
-              <p className="text-sm text-gray-500 mt-1">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.username}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{ROLE_LABELS[user?.role]}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Membro desde {user?.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : 'N/A'}
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900">Informações de Contato</h3>
-              <div className="flex items-center gap-2 text-gray-600">
+              <h3 className="font-semibold text-gray-900 dark:text-white">Informações de Contato</h3>
+              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Mail className="w-4 h-4" />
                 <span>{user?.email}</span>
                 {user?.email_verified_at && (
@@ -415,28 +415,28 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900">Estatísticas</h3>
+              <div className="space-y-2">
+              <h3 className="font-semibold text-gray-900 dark:text-white">Estatísticas</h3>
               <div className="flex gap-4 text-sm">
                 <div>
                   <p className="font-medium">Posts</p>
-                  <p className="text-gray-600">24</p>
+                  <p className="text-gray-600 dark:text-gray-400">24</p>
                 </div>
                 <div>
                   <p className="font-medium">Seguidores</p>
-                  <p className="text-gray-600">128</p>
+                  <p className="text-gray-600 dark:text-gray-400">128</p>
                 </div>
                 <div>
                   <p className="font-medium">Seguindo</p>
-                  <p className="text-gray-600">56</p>
+                  <p className="text-gray-600 dark:text-gray-400">56</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="mt-6 pt-6 border-t">
-            <h3 className="font-semibold text-gray-900 mb-3">Biografia</h3>
-            <p className="text-gray-600">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Biografia</h3>
+            <p className="text-gray-600 dark:text-gray-400">
               {user?.bio || 'Este usuário ainda não adicionou uma biografia.'}
             </p>
           </div>
@@ -445,45 +445,45 @@ const Profile = () => {
 
       <div className="space-y-6">
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Atividade Recente</h3>
+          <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Atividade Recente</h3>
           <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <Activity className="w-4 h-4 text-blue-600" />
               </div>
               <div>
                 <p className="text-sm font-medium">Post publicado</p>
-                <p className="text-xs text-gray-500">2 horas atrás</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">2 horas atrás</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-green-600" />
               </div>
               <div>
                 <p className="text-sm font-medium">Novo seguidor</p>
-                <p className="text-xs text-gray-500">1 dia atrás</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">1 dia atrás</p>
               </div>
             </div>
           </div>
         </Card>
 
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Conquistas</h3>
+          <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Conquistas</h3>
           <div className="grid grid-cols-3 gap-3">
-            <div className="text-center p-3 bg-yellow-50 rounded-lg">
+            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg">
               <div className="w-10 h-10 mx-auto bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 text-lg mb-1">
                 👤
               </div>
               <span className="text-xs font-medium">Perfil</span>
             </div>
-            <div className="text-center p-3 bg-blue-50 rounded-lg">
+            <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/10 rounded-lg">
               <div className="w-10 h-10 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-lg mb-1">
                 🔐
               </div>
               <span className="text-xs font-medium">Seguro</span>
             </div>
-            <div className="text-center p-3 bg-green-50 rounded-lg">
+            <div className="text-center p-3 bg-green-50 dark:bg-green-900/10 rounded-lg">
               <div className="w-10 h-10 mx-auto bg-green-100 rounded-full flex items-center justify-center text-green-600 text-lg mb-1">
                 ⭐
               </div>
@@ -499,18 +499,18 @@ const Profile = () => {
   const AvatarUploadWithDrop = () => (
     <div
       className={`border-2 border-dashed rounded-lg p-6 text-center transition cursor-pointer ${
-        dragOver ? 'border-primary-500 bg-primary-50' : 'border-gray-300 hover:border-gray-400'
+        dragOver ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10' : 'border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent'
       }`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onClick={() => document.getElementById('avatar-upload').click()}
     >
-      <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-      <p className="text-gray-600 mb-2">
+      <Camera className="w-12 h-12 text-gray-400 dark:text-gray-300 mx-auto mb-4" />
+      <p className="text-gray-600 dark:text-gray-400 mb-2">
         Arraste uma imagem aqui ou clique para selecionar
       </p>
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         JPEG, PNG, GIF, WebP • Máx. 5MB
       </p>
       <Button type="button" variant="outline">
@@ -531,7 +531,7 @@ const Profile = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header com Botão de Edição */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
             {isEditing ? 'Editar Perfil' : 'Meu Perfil'}
           </h1>
           <Button
@@ -564,7 +564,7 @@ const Profile = () => {
                   className={`flex items-center gap-2 pb-3 px-4 font-medium transition whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'border-b-2 border-primary-600 text-primary-600'
-                      : 'text-gray-600 hover:text-gray-900'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -608,16 +608,16 @@ const Profile = () => {
 
                       {/* Avatar Upload */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                           Foto do Perfil
                         </label>
                         <AvatarUploadWithDrop />
                         
                         {/* Preview do Avatar */}
                         {(avatarPreview || user?.avatar_url) && (
-                          <div className="flex items-center gap-4 mt-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-4 mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <div className="relative">
-                              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 border-2 border-white shadow-sm">
+                              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-2 border-white dark:border-gray-800 shadow-sm">
                                 <img
                                   src={avatarPreview || getImageUrl(user.avatar_url)}
                                   alt="Avatar preview"
@@ -626,11 +626,11 @@ const Profile = () => {
                               </div>
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
+                              <p className="text-sm font-medium text-gray-900 dark:text-white">
                                 {avatarFile ? 'Nova imagem selecionada' : 'Imagem atual'}
                               </p>
                               {avatarFile && (
-                                <p className="text-sm text-green-600">
+                                <p className="text-sm text-green-600 dark:text-green-400">
                                   ✅ {avatarFile.name} ({(avatarFile.size / 1024 / 1024).toFixed(2)} MB)
                                 </p>
                               )}
@@ -709,17 +709,17 @@ const Profile = () => {
                     <h3 className="font-semibold text-lg mb-4">Informações da Conta</h3>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm text-gray-600">Membro desde</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Membro desde</p>
                         <p className="font-medium">
                           {user?.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : 'N/A'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Função</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Função</p>
                         <p className="font-medium">{ROLE_LABELS[user?.role]}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Status</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Status</p>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="font-medium text-green-700">Ativo</span>
@@ -799,7 +799,7 @@ const Profile = () => {
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         Autenticação de Dois Fatores
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Adicione uma camada extra de segurança à sua conta
                       </p>
                     </div>
@@ -812,7 +812,7 @@ const Profile = () => {
                         <CheckCircle className="w-5 h-5" />
                         <span className="font-medium">2FA Ativado</span>
                       </div>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Sua conta está protegida com autenticação de dois fatores.
                       </p>
                       <Button variant="danger" onClick={disable2FA}>
@@ -821,7 +821,7 @@ const Profile = () => {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-gray-600">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                         <XCircle className="w-5 h-5" />
                         <span className="font-medium">2FA Desativado</span>
                       </div>
@@ -844,7 +844,7 @@ const Profile = () => {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">Sessões Ativas</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       Gerencie suas sessões ativas em diferentes dispositivos
                     </p>
                   </div>
@@ -864,11 +864,11 @@ const Profile = () => {
                       <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="flex items-center gap-4">
                           <div className="p-2 bg-gray-100 rounded-lg">
-                            <Monitor className="w-6 h-6 text-gray-600" />
+                            <Monitor className="w-6 h-6 text-gray-600 dark:text-gray-300" />
                           </div>
                           <div>
                             <p className="font-medium">{session.device}</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {session.browser} • {session.location}
                             </p>
                             <p className="text-xs text-gray-500">
@@ -908,7 +908,7 @@ const Profile = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">Notificações por Email</p>
-                        <p className="text-sm text-gray-600">Receba atualizações importantes por email</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Receba atualizações importantes por email</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -927,7 +927,7 @@ const Profile = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">Notificações Push</p>
-                        <p className="text-sm text-gray-600">Receba notificações no navegador</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Receba notificações no navegador</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -1012,7 +1012,7 @@ const Profile = () => {
                 <Card className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Exportação de Dados</h3>
                   <div className="space-y-4">
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-400">
                       Exporte todos os seus dados pessoais em formato JSON. Isso inclui suas informações de perfil, atividades e configurações.
                     </p>
                     <Button 
@@ -1065,7 +1065,7 @@ const Profile = () => {
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">Assinatura</h3>
-                    <p className="text-gray-600">Gerencie sua assinatura e método de pagamento</p>
+                    <p className="text-gray-600 dark:text-gray-400">Gerencie sua assinatura e método de pagamento</p>
                   </div>
                   <CreditCard className="w-6 h-6 text-gray-400" />
                 </div>

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { ArrowLeft, Plus, Edit, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { novelService } from '../../services/novelService';
+import { aiService } from '../../services/aiService'; // ✅ ADICIONAR
+import WorldbuildingPanel from '../../components/admin/WorldbuildingPanel';
 import { formatDate, formatNumber } from '../../utils/formatters';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Input from '../../components/common/Input';
 import Loading from '../../components/common/Loading';
+import ProviderSelector from '../../components/admin/ProviderSelector'; // ✅ ADICIONAR
 
 const NovelChapterManager = () => {
   const { id } = useParams();
@@ -47,10 +50,7 @@ const NovelChapterManager = () => {
   const handleEditChapter = async (chapter) => {
     try {
       setChapterLoading(true);
-      
-      // ✅ CARREGAR DADOS COMPLETOS DO CAPÍTULO
       const chapterData = await novelService.getChapter(chapter.id);
-      
       setEditingChapter(chapterData.chapter);
       setShowModal(true);
     } catch (error) {
@@ -75,13 +75,10 @@ const NovelChapterManager = () => {
     }
   };
 
-  // ✅ FUNÇÃO PARA OBTER PREVIEW SEGURO DO CONTEÚDO
   const getContentPreview = (content) => {
     if (!content) return 'Sem conteúdo disponível';
-    
     const safeContent = typeof content === 'string' ? content : String(content);
     const textOnly = safeContent.replace(/<[^>]*>/g, '');
-    
     return textOnly.length > 100 ? textOnly.substring(0, 100) + '...' : textOnly;
   };
 
@@ -91,7 +88,6 @@ const NovelChapterManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -117,16 +113,14 @@ const NovelChapterManager = () => {
         </Button>
       </div>
 
-      {/* Loading para carregamento de capítulo */}
       {chapterLoading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl">
-            <Loading text="Carregando capítulo..." />
+            <Loading />
           </div>
         </div>
       )}
 
-      {/* Chapters List */}
       {chapters.length === 0 ? (
         <Card className="p-12 text-center">
           <p className="text-gray-500 mb-4">Nenhum capítulo cadastrado</p>
@@ -152,11 +146,9 @@ const NovelChapterManager = () => {
                       Capítulo {chapter.chapter_number}
                       {chapter.title && ` - ${chapter.title}`}
                     </h3>
-                    
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {getContentPreview(chapter.content)}
                     </p>
-                    
                     <p className="text-xs text-gray-500 mt-1">
                       {formatNumber(chapter.views || 0)} visualizações • Criado em {formatDate(chapter.created_at)}
                     </p>
@@ -185,7 +177,6 @@ const NovelChapterManager = () => {
         </div>
       )}
 
-      {/* Chapter Modal */}
       {showModal && (
         <NovelChapterModal
           novelId={id}
@@ -205,18 +196,19 @@ const NovelChapterManager = () => {
   );
 };
 
-// Modal de Criar/Editar Capítulo de Novel - ✅ COM MULTI-IA
 const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [showAiOptions, setShowAiOptions] = useState(false);
+  const [showWorldbuilding, setShowWorldbuilding] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
-  const [providerConfig, setProviderConfig] = useState({});
+  const [providerConfig, setProviderConfig] = useState({ provider: 'anthropic' }); // ✅ VALOR PADRÃO
   const [formData, setFormData] = useState({
     chapter_number: '',
     title: '',
     content: ''
   });
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     if (chapter) {
@@ -225,27 +217,36 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
         title: chapter.title || '',
         content: chapter.content || ''
       });
-    } else {
-      setFormData({
-        chapter_number: '',
-        title: '',
-        content: ''
-      });
     }
   }, [chapter]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // ... (mesmo código anterior)
+
+    try {
+      setLoading(true);
+
+      if (chapter) {
+        await novelService.updateChapter(chapter.id, formData);
+        toast.success('Capítulo atualizado com sucesso!');
+      } else {
+        await novelService.createChapter(novelId, formData);
+        toast.success('Capítulo criado com sucesso!');
+      }
+
+      onSuccess();
+    } catch (error) {
+      toast.error(error.response?.data?.error || 'Erro ao salvar capítulo');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAIAction = async (action, extraParams = {}) => {
+  const handleAIAction = async (action) => {
     try {
       setAiLoading(true);
-      
       let result;
-      const config = providerConfig.provider ? providerConfig : { provider: 'anthropic' };
-      
+
       switch (action) {
         case 'generate':
           if (!formData.chapter_number) {
@@ -257,10 +258,10 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             formData.chapter_number,
             formData.title,
             aiPrompt,
-            config
+            providerConfig
           );
           setFormData(prev => ({ ...prev, content: result.content }));
-          toast.success(`Capítulo gerado com ${result.provider.name}!`);
+          toast.success('Capítulo gerado!');
           break;
           
         case 'improve':
@@ -268,9 +269,9 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             toast.error('Escreva algum conteúdo primeiro');
             return;
           }
-          result = await aiService.improveContent(formData.content, aiPrompt, config);
+          result = await aiService.improveContent(formData.content, aiPrompt, providerConfig);
           setFormData(prev => ({ ...prev, content: result.content }));
-          toast.success(`Texto melhorado com ${result.provider.name}!`);
+          toast.success('Texto melhorado!');
           break;
           
         case 'continue':
@@ -278,26 +279,22 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             toast.error('Escreva algum conteúdo primeiro');
             return;
           }
-          result = await aiService.continueText(novelId, formData.content, aiPrompt, config);
+          result = await aiService.continueText(novelId, formData.content, aiPrompt, providerConfig);
           setFormData(prev => ({ ...prev, content: prev.content + '\n\n' + result.content }));
-          toast.success(`Texto continuado com ${result.provider.name}!`);
+          toast.success('Texto continuado!');
           break;
           
         case 'ideas':
-          result = await aiService.getChapterIdeas(novelId, config);
+          result = await aiService.getChapterIdeas(novelId, providerConfig);
           alert("💡 Ideias geradas:\n\n" + result.ideas);
-          toast.success(`Ideias geradas com ${result.provider.name}!`);
-          break;
-          
-        default:
           break;
       }
       
       setShowAiOptions(false);
       setAiPrompt('');
     } catch (error) {
-      console.error(`Erro na ação ${action}:`, error);
-      toast.error(error.response?.data?.error || `Erro ao executar ação`);
+      console.error('Erro na ação IA:', error);
+      toast.error(error.response?.data?.error || 'Erro ao executar ação');
     } finally {
       setAiLoading(false);
     }
@@ -329,7 +326,6 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
           />
         </div>
 
-        {/* Botões de IA */}
         <div className="flex gap-2 flex-wrap">
           <Button
             type="button"
@@ -352,40 +348,33 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             loading={aiLoading}
             className="border-blue-500 text-blue-600 hover:bg-blue-50"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-            Gerar Ideias
+            💡 Gerar Ideias
           </Button>
         </div>
 
-        {/* Painel de Opções de IA */}
         {showAiOptions && (
           <Card className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
             <h3 className="font-semibold text-purple-900 mb-3 flex items-center">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              Assistente de IA Multi-Provedor
+              Assistente de IA
             </h3>
             
-            {/* Seletor de Provedor */}
             <ProviderSelector
               value={providerConfig}
               onChange={setProviderConfig}
               className="mb-4"
             />
             
-            {/* Prompt do usuário */}
             <textarea
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
-              placeholder="Instruções para a IA (opcional)... Ex: 'Crie uma cena de ação emocionante' ou 'Desenvolva o relacionamento dos personagens'"
+              placeholder="Instruções para a IA (opcional)..."
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-3 text-sm"
               rows={3}
             />
 
-            {/* Botões de Ação */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <Button
                 type="button"
@@ -395,7 +384,7 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
                 disabled={!formData.chapter_number}
                 className="bg-purple-600 hover:bg-purple-700 text-white"
               >
-                🎭 Gerar Capítulo
+                🎭 Gerar
               </Button>
               <Button
                 type="button"
@@ -405,7 +394,7 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
                 loading={aiLoading}
                 disabled={!formData.content}
               >
-                ✨ Melhorar Texto
+                ✨ Melhorar
               </Button>
               <Button
                 type="button"
@@ -415,17 +404,62 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
                 loading={aiLoading}
                 disabled={!formData.content}
               >
-                ➕ Continuar História
+                ➕ Continuar
               </Button>
             </div>
 
-            <p className="text-xs text-purple-600 mt-2">
-              💡 Dica: Você pode editar o texto gerado pela IA antes de salvar
-            </p>
-          </Card>
-        )}
+              <p className="text-xs text-purple-600 mt-2">
+                💡 Dica: Você pode editar o texto gerado pela IA antes de salvar
+              </p>
+            </Card>
+          )}
 
-        {/* Conteúdo */}
+          {/* Worldbuilding toggle and panel (moved here to avoid JSX break) */}
+          <div className="mt-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowWorldbuilding(!showWorldbuilding)}
+            >
+              📚 Worldbuilding
+            </Button>
+          </div>
+
+          {showWorldbuilding && (
+            <div className="mt-3">
+              <WorldbuildingPanel
+                novelId={novelId}
+                onSelect={(item, type) => {
+                  const cursorPos = textareaRef.current?.selectionStart || formData.content.length;
+                  let insertion = '';
+                  switch (type) {
+                    case 'character':
+                      insertion = `\n\n[${item.name}]\n${item.description}\n`;
+                      break;
+                    case 'world':
+                      insertion = `\n\n[Mundo: ${item.name}]\n${item.description}\n`;
+                      break;
+                    case 'magic':
+                      insertion = `\n\n[Sistema de Magia: ${item.name}]\n${item.description}\n`;
+                      break;
+                    case 'cultivation':
+                      insertion = `\n\n[Cultivo: ${item.name}]\nNíveis: ${item.levels?.join(', ')}\n`;
+                      break;
+                  }
+
+                  const newContent =
+                    formData.content.slice(0, cursorPos) +
+                    insertion +
+                    formData.content.slice(cursorPos);
+
+                  setFormData({ ...formData, content: newContent });
+                  toast.success('Inserido no capítulo!');
+                }}
+              />
+            </div>
+          )}
+
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -436,10 +470,11 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             </span>
           </div>
           <textarea
+            ref={textareaRef}
             value={formData.content}
             onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
             rows={16}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white font-serif resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent font-serif resize-none"
             placeholder="Digite o texto do capítulo aqui ou use as ferramentas de IA..."
             required
           />

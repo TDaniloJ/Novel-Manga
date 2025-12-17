@@ -119,8 +119,8 @@ const Dashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Visão geral do sistema</p>
+           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+           <p className="text-gray-600 dark:text-gray-400">Visão geral do sistema</p>
         </div>
         <div className="flex gap-3">
           <Link to="/admin/mangas/new">
@@ -171,9 +171,7 @@ const Dashboard = () => {
         {/* Recent Mangas */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">
-              Mangás Recentes
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Mangás Recentes</h2>
             <Link
               to="/admin/mangas"
               className="text-sm text-primary-600 hover:text-primary-700 font-medium"
@@ -203,9 +201,7 @@ const Dashboard = () => {
         {/* Recent Novels */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">
-              Novels Recentes
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Novels Recentes</h2>
             <Link
               to="/admin/novels"
               className="text-sm text-primary-600 hover:text-primary-700 font-medium"
@@ -235,30 +231,28 @@ const Dashboard = () => {
 
       {/* Quick Actions */}
       <Card className="p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
-          Ações Rápidas
-        </h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Ações Rápidas</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Link to="/admin/mangas">
-            <button className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition group">
+              <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
               <BookOpen className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
               <p className="font-medium text-gray-900">Gerenciar Mangás</p>
             </button>
           </Link>
           <Link to="/admin/novels">
-            <button className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition group">
+            <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
               <FileText className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
               <p className="font-medium text-gray-900">Gerenciar Novels</p>
             </button>
           </Link>
           <Link to="/admin/genres">
-            <button className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition group">
+            <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
               <Tag className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
               <p className="font-medium text-gray-900">Gerenciar Gêneros</p>
             </button>
           </Link>
           <Link to="/admin/users">
-            <button className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition group">
+              <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
               <Users className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
               <p className="font-medium text-gray-900">Gerenciar Usuários</p>
             </button>
@@ -274,9 +268,9 @@ const ContentItem = ({ item, type, chaptersCount, editUrl }) => {
   return (
     <Link
       to={editUrl}
-      className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition"
+      className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition"
     >
-      <div className="w-12 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+      <div className="w-12 h-16 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
         <img
           src={item.cover_image ? 
             `http://localhost:5000${item.cover_image}` : 
@@ -290,18 +284,18 @@ const ContentItem = ({ item, type, chaptersCount, editUrl }) => {
         />
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-gray-900 truncate">
+        <h3 className="font-medium text-gray-900 dark:text-white truncate">
           {item.title}
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           {chaptersCount === '...' ? (
-            <span className="text-gray-400">Carregando...</span>
+            <span className="text-gray-400 dark:text-gray-500">Carregando...</span>
           ) : (
             `${chaptersCount} capítulo${chaptersCount !== 1 ? 's' : ''}`
           )}
         </p>
       </div>
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-gray-500 dark:text-gray-400">
         {formatNumber(item.views || 0)} views
       </div>
     </Link>

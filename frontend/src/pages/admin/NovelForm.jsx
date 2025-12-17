@@ -12,6 +12,8 @@ import Input from '../../components/common/Input';
 import Select from '../../components/common/Select';
 import Button from '../../components/common/Button';
 import Loading from '../../components/common/Loading';
+import Modal from '../../components/common/Modal';
+import WorldbuildingPanel from '../../components/admin/WorldbuildingPanel';
 
 const NovelForm = () => {
   const { id } = useParams();
@@ -24,6 +26,7 @@ const NovelForm = () => {
   const [coverPreview, setCoverPreview] = useState(null);
   const [alternativeTitles, setAlternativeTitles] = useState(['']);
   const [coverFile, setCoverFile] = useState(null);
+  const [showWorldbuilding, setShowWorldbuilding] = useState(false);
   
   const { register, handleSubmit, setValue, formState: { errors }, watch } = useForm();
 
@@ -204,6 +207,13 @@ const NovelForm = () => {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Voltar
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowWorldbuilding(true)}
+        >
+          📚 Worldbuilding
+        </Button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
             {isEdit ? 'Editar Novel' : 'Nova Novel'}
@@ -213,6 +223,22 @@ const NovelForm = () => {
           </p>
         </div>
       </div>
+
+      {showWorldbuilding && (
+        <Modal isOpen={true} onClose={() => setShowWorldbuilding(false)} title="Worldbuilding">
+          {id ? (
+            <WorldbuildingPanel
+              novelId={id}
+              onSuccess={() => {
+                setShowWorldbuilding(false);
+                loadGenres();
+              }}
+            />
+          ) : (
+            <div className="p-4">Salve a novel primeiro para usar o Worldbuilding.</div>
+          )}
+        </Modal>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" encType="multipart/form-data">
         {/* Basic Info */}

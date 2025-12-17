@@ -23,7 +23,16 @@ db.Genre = require('./Genre')(sequelize, Sequelize);
 db.Favorite = require('./Favorite')(sequelize, Sequelize);
 db.ReadingHistory = require('./ReadingHistory')(sequelize, Sequelize);
 db.Comment = require('./Comment')(sequelize, Sequelize);
-db.Session = require('./Session')(sequelize, Sequelize); // ✅ NOVO
+db.Session = require('./Session')(sequelize, Sequelize);
+
+// ✅ ADICIONAR NOVOS MODELS DE WORLDBUILDING
+db.Character = require('./Character')(sequelize, Sequelize);
+db.World = require('./World')(sequelize, Sequelize);
+db.MagicSystem = require('./MagicSystem')(sequelize, Sequelize);
+db.CultivationSystem = require('./CultivationSystem')(sequelize, Sequelize);
+db.Item = require('./Item')(sequelize, Sequelize);
+db.Organization = require('./Organization')(sequelize, Sequelize);
+db.Timeline = require('./Timeline')(sequelize, Sequelize);
 
 // Definir associações
 Object.keys(db).forEach(modelName => {

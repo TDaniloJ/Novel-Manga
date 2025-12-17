@@ -131,14 +131,14 @@ const Search = () => {
   const hasFilters = selectedGenre || status || mangaType || contentType !== 'all';
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container-custom">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
             Pesquisar
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Encontre seus mangás e novels favoritos
           </p>
         </div>
@@ -175,7 +175,7 @@ const Search = () => {
             <div className="space-y-4">
               {/* Content Type Tabs */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Tipo de Conteúdo
                 </label>
                 <div className="flex gap-2">
@@ -183,8 +183,8 @@ const Search = () => {
                     onClick={() => setContentType('all')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${
                       contentType === 'all'
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     Todos
@@ -193,8 +193,8 @@ const Search = () => {
                     onClick={() => setContentType('manga')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${
                       contentType === 'manga'
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     <BookOpen className="w-4 h-4 inline mr-2" />
@@ -204,8 +204,8 @@ const Search = () => {
                     onClick={() => setContentType('novel')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${
                       contentType === 'novel'
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     <FileText className="w-4 h-4 inline mr-2" />
@@ -270,14 +270,14 @@ const Search = () => {
         {/* Results Info */}
         {(debouncedSearch || hasFilters) && !loading && (
           <div className="mb-6">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               {pagination.total > 0 ? (
                 <>
                   Encontrado{pagination.total !== 1 ? 's' : ''}{' '}
-                  <span className="font-semibold text-gray-900">{pagination.total}</span>{' '}
+                  <span className="font-semibold text-gray-900 dark:text-white">{pagination.total}</span>{' '}
                   resultado{pagination.total !== 1 ? 's' : ''}
                   {debouncedSearch && (
-                    <> para "<span className="font-semibold text-gray-900">{debouncedSearch}</span>"</>
+                    <> para "<span className="font-semibold text-gray-900 dark:text-white">{debouncedSearch}</span>"</>
                   )}
                 </>
               ) : (
@@ -296,7 +296,7 @@ const Search = () => {
             {/* Mangas */}
             {results.mangas.length > 0 && (
               <section className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BookOpen className="w-6 h-6 text-primary-600" />
                   Mangás ({results.mangas.length})
                 </h2>
@@ -311,7 +311,7 @@ const Search = () => {
             {/* Novels */}
             {results.novels.length > 0 && (
               <section className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <FileText className="w-6 h-6 text-primary-600" />
                   Novels ({results.novels.length})
                 </h2>
@@ -363,7 +363,7 @@ const ResultCard = ({ item, type }) => {
   return (
     <Link to={`/${type}/${item.id}`}>
       <Card hover className="group">
-        <div className="aspect-[2/3] overflow-hidden bg-gray-200">
+        <div className="aspect-[2/3] overflow-hidden bg-gray-200 dark:bg-gray-700">
           {!imageError && imageUrl ? (
             <img
               src={imageUrl}
@@ -372,8 +372,8 @@ const ResultCard = ({ item, type }) => {
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-300">
-              <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-full h-full flex items-center justify-center bg-gray-300 dark:bg-gray-600">
+              <svg className="w-16 h-16 text-gray-400 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
             </div>
@@ -381,14 +381,14 @@ const ResultCard = ({ item, type }) => {
         </div>
         <div className="p-3">
           <div className="mb-2">
-            <span className="inline-block px-2 py-1 text-xs font-medium bg-primary-100 text-primary-700 rounded">
+            <span className="inline-block px-2 py-1 text-xs font-medium bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded">
               {type === 'manga' ? 'Mangá' : 'Novel'}
             </span>
           </div>
-          <h3 className="font-semibold text-sm line-clamp-2 mb-2">
+          <h3 className="font-semibold text-sm line-clamp-2 mb-2 text-gray-900 dark:text-white">
             {item.title}
           </h3>
-          <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
             <span className="flex items-center gap-1">
               {type === 'manga' ? <BookOpen className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
               {item.chapters?.length || 0}
