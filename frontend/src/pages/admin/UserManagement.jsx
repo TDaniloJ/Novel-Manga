@@ -52,6 +52,10 @@ const UserManagement = () => {
     loadUsers();
   }, [page, debouncedSearch, filters]);
 
+const getTotalFavorites = (favorites) => {
+  return (favorites.mangas?.length || 0) + (favorites.novels?.length || 0);
+};
+
   const loadUsers = async () => {
     try {
       setLoading(true);
@@ -219,13 +223,13 @@ const UserManagement = () => {
         <Card className="p-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
                 Papel
               </label>
               <select
                 value={filters.role}
                 onChange={(e) => setFilters({ ...filters, role: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Todos os papéis</option>
                 <option value="reader">Leitor</option>
@@ -234,13 +238,13 @@ const UserManagement = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
                 Status
               </label>
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
               >
                 <option value="">Todos os status</option>
                 <option value="active">Ativo</option>
@@ -248,25 +252,25 @@ const UserManagement = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
                 Data de (from)
               </label>
               <input
                 type="date"
                 value={filters.dateFrom}
                 onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
                 Data até (to)
               </label>
               <input
                 type="date"
                 value={filters.dateTo}
                 onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
               />
             </div>
           </div>
@@ -290,8 +294,8 @@ const UserManagement = () => {
       {/* Users Table */}
       {users.length === 0 ? (
         <Card className="p-12 text-center">
-          <p className="text-gray-500 mb-4">Nenhum usuário encontrado</p>
-          <p className="text-sm text-gray-400">
+          <p className="text-gray-500 mb-4 dark:text-gray-400">Nenhum usuário encontrado</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">
             {search || Object.values(filters).some(f => f) 
               ? 'Tente ajustar os termos da busca ou filtros' 
               : 'Os usuários serão listados aqui'
@@ -305,39 +309,39 @@ const UserManagement = () => {
               <table className="w-full">
                 <thead className="bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Usuário
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Contato
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Papel
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Cadastrado em
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                       Ações
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {users.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-200">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
+                          <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold dark:bg-primary-400">
                             {user.username?.charAt(0).toUpperCase() || 'U'}
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900 dark:text-white">
+                            <p className="font-medium text-gray-900 dark:text-white dark:hover:text-primary-400">
                               {user.username}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               ID: {user.id}
                             </p>
                           </div>
@@ -345,9 +349,9 @@ const UserManagement = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm">
-                          <p className="text-gray-900">{user.email}</p>
+                          <p className="text-gray-900 dark:text-white">{user.email}</p>
                           {user.last_login && (
-                            <p className="text-gray-500 text-xs">
+                            <p className="text-gray-500 text-xs dark:text-gray-400">
                               Último login: {formatDate(user.last_login)}
                             </p>
                           )}
@@ -356,10 +360,10 @@ const UserManagement = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           {getRoleIcon(user.role)}
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.role === 'admin' ? 'bg-yellow-100 text-yellow-800' :
-                            user.role === 'uploader' ? 'bg-blue-100 text-blue-800' :
-                            'bg-gray-100 text-gray-800'
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full dark:bg-gray-700 dark:text-gray-200 ${
+                            user.role === 'admin' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                            user.role === 'uploader' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                            'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
                           }`}>
                             {ROLE_LABELS[user.role]}
                           </span>
@@ -368,17 +372,17 @@ const UserManagement = () => {
                       <td className="px-6 py-4">
                         {getStatusBadge(user.status || 'active')}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                         {formatDate(user.created_at)}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        <div className="flex items-center justify-end gap-1 dark:text-gray-200">
                           <button
                             onClick={() => {
                               setSelectedUser(user);
                               setShowDetailsModal(true);
                             }}
-                            className="p-2 text-gray-600 hover:text-primary-600 transition"
+                            className="p-2 text-gray-600 hover:text-primary-600 transition dark:text-gray-200"
                             title="Ver detalhes"
                           >
                             <Eye className="w-4 h-4" />
@@ -389,7 +393,7 @@ const UserManagement = () => {
                               setSelectedUser(user);
                               setShowEditModal(true);
                             }}
-                            className="p-2 text-gray-600 hover:text-primary-600 transition"
+                            className="p-2 text-gray-600 hover:text-primary-600 transition dark:text-gray-200"
                             title="Editar usuário"
                           >
                             <Edit className="w-4 h-4" />
@@ -400,7 +404,7 @@ const UserManagement = () => {
                               setSelectedUser(user);
                               setShowResetPasswordModal(true);
                             }}
-                            className="p-2 text-gray-600 hover:text-orange-600 transition"
+                            className="p-2 text-gray-600 hover:text-orange-600 transition dark:text-gray-200"
                             title="Resetar senha"
                           >
                             <Lock className="w-4 h-4" />
@@ -408,7 +412,7 @@ const UserManagement = () => {
 
                           <button
                             onClick={() => handleToggleStatus(user.id, user.status || 'active')}
-                            className="p-2 text-gray-600 hover:text-purple-600 transition"
+                            className="p-2 text-gray-600 hover:text-purple-600 transition dark:text-gray-200"
                             title={user.status === 'active' ? 'Desativar usuário' : 'Ativar usuário'}
                           >
                             <Ban className="w-4 h-4" />
@@ -417,7 +421,7 @@ const UserManagement = () => {
                           <select
                             value={user.role}
                             onChange={(e) => handleChangeRole(user.id, e.target.value)}
-                            className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                            className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:ring-primary-400"
                             title="Alterar papel"
                           >
                             <option value="reader">Leitor</option>
@@ -427,7 +431,7 @@ const UserManagement = () => {
 
                           <button
                             onClick={() => handleDeleteUser(user.id, user.username)}
-                            className="p-2 text-gray-600 hover:text-red-600 transition disabled:opacity-50"
+                            className="p-2 text-gray-600 hover:text-red-600 transition disabled:opacity-50 dark:text-gray-200"
                             title="Deletar usuário"
                             disabled={user.role === 'admin' && user.id === 1}
                           >
@@ -452,8 +456,8 @@ const UserManagement = () => {
                     onClick={() => goToPage(pageNum)}
                     className={`px-3 py-1 rounded ${
                       page === pageNum 
-                        ? 'bg-primary-600 text-white' 
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-primary-600 text-white dark:bg-primary-400 dark:text-gray-900' 
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                     }`}
                   >
                     {pageNum}
@@ -500,34 +504,34 @@ const UserManagement = () => {
 
       {/* Role Descriptions */}
       <Card className="p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 dark:text-white">
           Descrição dos Papéis
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 border-2 border-gray-200 rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 dark:text-gray-200">
+          <div className="p-4 border-2 border-gray-200 rounded-lg dark:border-gray-600">
             <div className="flex items-center gap-2 mb-2">
-              <Crown className="w-5 h-5 text-yellow-600" />
-              <h3 className="font-semibold text-gray-900">Administrador</h3>
+              <Crown className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+              <h3 className="font-semibold text-gray-900 dark:text-white">Administrador</h3>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               Acesso completo ao sistema. Pode gerenciar usuários, conteúdo e configurações.
             </p>
           </div>
-          <div className="p-4 border-2 border-gray-200 rounded-lg">
+          <div className="p-4 border-2 border-gray-200 rounded-lg dark:border-gray-600">
             <div className="flex items-center gap-2 mb-2">
               <Shield className="w-5 h-5 text-blue-600" />
-              <h3 className="font-semibold text-gray-900">Uploader</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Uploader</h3>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               Pode criar, editar e gerenciar mangás, novels e capítulos.
             </p>
           </div>
-          <div className="p-4 border-2 border-gray-200 rounded-lg">
+          <div className="p-4 border-2 border-gray-200 rounded-lg dark:border-gray-600">
             <div className="flex items-center gap-2 mb-2">
-              <User className="w-5 h-5 text-gray-600" />
-              <h3 className="font-semibold text-gray-900">Leitor</h3>
+              <User className="w-5 h-5 text-gray-600 dark:text-gray-200" />
+              <h3 className="font-semibold text-gray-900 dark:text-white">Leitor</h3>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               Pode ler conteúdo, adicionar favoritos e manter histórico de leitura.
             </p>
           </div>
@@ -579,13 +583,13 @@ const EditUserModal = ({ user, onClose, onSave }) => {
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
               Papel
             </label>
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
             >
               <option value="reader">Leitor</option>
               <option value="uploader">Uploader</option>
@@ -594,13 +598,13 @@ const EditUserModal = ({ user, onClose, onSave }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
               Status
             </label>
             <select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
             >
               <option value="active">Ativo</option>
               <option value="inactive">Inativo</option>
@@ -632,34 +636,34 @@ const UserDetailsModal = ({ user, onClose }) => {
     >
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-xl">
+          <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-xl dark:bg-primary-400">
             {user.username?.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{user.username}</h3>
-            <p className="text-gray-600">{user.email}</p>
-            <p className="text-sm text-gray-500">ID: {user.id}</p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{user.username}</h3>
+            <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">ID: {user.id}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Papel</p>
-            <p className="font-semibold text-gray-900">{ROLE_LABELS[user.role]}</p>
+          <div className="p-4 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-300">Papel</p>
+            <p className="font-semibold text-gray-900 dark:text-white">{ROLE_LABELS[user.role]}</p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Status</p>
+          <div className="p-4 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-300">Status</p>
             <p className={`font-semibold ${user.status === 'active' ? 'text-green-600' : 'text-red-600'}`}>
               {user.status === 'active' ? 'Ativo' : 'Inativo'}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Cadastrado em</p>
-            <p className="font-semibold text-gray-900">{formatDate(user.created_at)}</p>
+          <div className="p-4 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-300">Cadastrado em</p>
+            <p className="font-semibold text-gray-900 dark:text-white">{formatDate(user.created_at)}</p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Último login</p>
-            <p className="font-semibold text-gray-900">
+          <div className="p-4 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-300">Último login</p>
+            <p className="font-semibold text-gray-900 dark:text-white">
               {user.last_login ? formatDate(user.last_login) : 'Nunca logou'}
             </p>
           </div>
@@ -667,19 +671,19 @@ const UserDetailsModal = ({ user, onClose }) => {
 
         {/* Aqui você pode adicionar mais estatísticas quando tiver */}
         <div className="border-t pt-4">
-          <h4 className="font-semibold text-gray-900 mb-3">Estatísticas</h4>
+          <h4 className="font-semibold text-gray-900 mb-3 dark:text-white">Estatísticas</h4>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-primary-600">{user.favorites_count || 0}</p>
-              <p className="text-sm text-gray-600">Favoritos</p>
+              <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">{user.favorites_count || 0}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Favoritos</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-primary-600">{user.comments_count || 0}</p>
-              <p className="text-sm text-gray-600">Comentários</p>
+              <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">{user.comments_count || 0}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Comentários</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-primary-600">{user.reading_time || 0}h</p>
-              <p className="text-sm text-gray-600">Tempo de leitura</p>
+              <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">{user.reading_time || 0}h</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Tempo de leitura</p>
             </div>
           </div>
         </div>
@@ -723,7 +727,7 @@ const ResetPasswordModal = ({ user, onClose, onReset }) => {
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-400">
             Nova senha para {user.username}
           </label>
           <div className="flex gap-2">
@@ -742,7 +746,7 @@ const ResetPasswordModal = ({ user, onClose, onReset }) => {
               Gerar
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
             A senha será alterada imediatamente após confirmar.
           </p>
         </div>

@@ -59,7 +59,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a 
-                  href="#" 
+                  href="/faq" 
                   className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-300 transition-colors"
                 >
                   FAQ
@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/contact" 
                   className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-300 transition-colors"
                 >
                   Contato
@@ -75,7 +75,7 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/terms" 
                   className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-300 transition-colors"
                 >
                   Termos de Uso

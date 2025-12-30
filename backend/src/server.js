@@ -19,6 +19,8 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const readingHistoryRoutes = require('./routes/readingHistoryRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const worldbuildingRoutes = require('./routes/worldbuildingRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 const app = express();
 
@@ -47,6 +49,8 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reading-history', readingHistoryRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/worldbuilding', worldbuildingRoutes);
+app.use('/api/contact', contactRoutes);
 
 // ROTA DE TESTE
 app.get('/', (req, res) => {

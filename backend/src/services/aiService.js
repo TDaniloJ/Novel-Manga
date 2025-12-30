@@ -18,6 +18,15 @@ class AIService {
 
   async generateContent(provider, model, systemPrompt, userMessage, maxTokens = 4000) {
     try {
+      // If no API key configured for this provider, in development return a simulated response
+      if (!this.hasApiKey(provider)) {
+        const warning = `#SIMULATED_RESPONSE# Provedor ${provider} não configurado corretamente.`;
+        console.warn(warning);
+        if (process.env.NODE_ENV === 'development') {
+          return `${warning}\n\n(Resposta simulada)\n\n${userMessage.slice(0, 500)}...`;
+        }
+        throw new Error(`API key para provedor ${provider} ausente`);
+      }
       switch (provider) {
         case 'anthropic':
           return await this.generateWithAnthropic(model, systemPrompt, userMessage, maxTokens);
@@ -193,11 +202,13 @@ Continue a história a partir deste ponto de forma natural e envolvente. Escreva
   }
 
   hasApiKey(provider) {
+    const isPlaceholder = (val) => !val || typeof val !== 'string' || /^\s*$/.test(val) || /sua_chave|changeme|replace_me|API_KEY/.test(val);
+
     switch (provider) {
-      case 'anthropic': return !!process.env.ANTHROPIC_API_KEY;
-      case 'openai': return !!process.env.OPENAI_API_KEY;
-      case 'google': return !!process.env.GOOGLE_API_KEY;
-      case 'groq': return !!process.env.GROQ_API_KEY;
+      case 'anthropic': return !!process.env.ANTHROPIC_API_KEY && !isPlaceholder(process.env.ANTHROPIC_API_KEY);
+      case 'openai': return !!process.env.OPENAI_API_KEY && !isPlaceholder(process.env.OPENAI_API_KEY);
+      case 'google': return !!process.env.GOOGLE_API_KEY && !isPlaceholder(process.env.GOOGLE_API_KEY);
+      case 'groq': return !!process.env.GROQ_API_KEY && !isPlaceholder(process.env.GROQ_API_KEY);
       default: return false;
     }
   }

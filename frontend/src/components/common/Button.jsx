@@ -32,6 +32,7 @@ const Button = ({
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
+      type={props.type || 'button'}
       disabled={disabled || loading}
       {...props}
     >

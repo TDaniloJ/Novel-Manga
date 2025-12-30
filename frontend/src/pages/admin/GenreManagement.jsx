@@ -95,8 +95,8 @@ const GenreManagement = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Gerenciar Gêneros</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Gerenciar Gêneros</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             {genres.length} gênero{genres.length !== 1 ? 's' : ''} cadastrado{genres.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -112,20 +112,20 @@ const GenreManagement = () => {
           {genres.map((genre) => (
             <div
               key={genre.id}
-              className="flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg hover:border-primary-500 transition group"
+              className="flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg hover:border-primary-500 transition group dark:border-gray-700 dark:hover:border-primary-400"
             >
-              <span className="font-medium text-gray-900">{genre.name}</span>
-              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
+              <span className="font-medium text-gray-900 dark:text-white">{genre.name}</span>
+              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition dark:text-gray-300">
                 <button
                   onClick={() => handleOpenModal(genre)}
-                  className="p-1 text-gray-600 hover:text-primary-600 transition"
+                  className="p-1 text-gray-600 hover:text-primary-600 transition dark:hover:text-primary-400"
                   title="Editar"
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(genre.id, genre.name)}
-                  className="p-1 text-gray-600 hover:text-red-600 transition"
+                  className="p-1 text-gray-600 hover:text-red-600 transition dark:hover:text-red-400"
                   title="Deletar"
                 >
                   <Trash2 className="w-4 h-4" />

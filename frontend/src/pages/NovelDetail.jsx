@@ -138,10 +138,10 @@ const NovelDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
 
       {/* HERO IGUAL AO DO MANGA */}
-      <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden dark:from-gray-800 dark:to-gray-900">
         {!imageError && imageUrl && (
           <div 
             className="absolute inset-0 opacity-20 blur-2xl"
@@ -158,7 +158,7 @@ const NovelDetail = () => {
             variant="secondary"
             size="sm"
             onClick={() => navigate(-1)}
-            className="mb-4 bg-white/10 hover:bg-white/20 text-white border-0"
+            className="mb-4 bg-white/10 hover:bg-white/20 text-white border-0 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white dark:border-0"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
@@ -203,7 +203,7 @@ const NovelDetail = () => {
                   {getStatusText()}
                 </span>
 
-                <span className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-full font-semibold uppercase text-sm">
+                <span className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-full font-semibold uppercase text-sm dark:bg-primary-500 dark:text-white">
                   Novel
                 </span>
 
@@ -283,12 +283,12 @@ const NovelDetail = () => {
 
             {/* Sinopse */}
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BookOpen className="w-6 h-6 text-primary-600" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2 dark:text-white">
+                <BookOpen className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 Sinopse
               </h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line dark:text-gray-300">
                   {currentNovel.description || 'Sem descrição disponível.'}
                 </p>
               </div>
@@ -297,10 +297,10 @@ const NovelDetail = () => {
             {/* LISTA DE CAPÍTULOS */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                  <BookOpen className="w-6 h-6 text-primary-600" />
+                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 dark:text-white">
+                  <BookOpen className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                   Capítulos
-                  <span className="text-lg font-normal text-gray-500">
+                  <span className="text-lg font-normal text-gray-500 dark:text-gray-400">
                     ({sortedChapters.length})
                   </span>
                 </h2>
@@ -315,8 +315,8 @@ const NovelDetail = () => {
 
               {sortedChapters.length === 0 ? (
                 <div className="text-center py-12">
-                  <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 text-lg">Nenhum capítulo disponível ainda</p>
+                  <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4 dark:text-gray-600" />
+                  <p className="text-gray-500 text-lg dark:text-gray-400">Nenhum capítulo disponível ainda</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -324,18 +324,18 @@ const NovelDetail = () => {
                     <Link
                       key={chapter.id}
                       to={`/novel/${currentNovel.id}/chapter/${chapter.id}`}
-                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all group border border-transparent hover:border-primary-200"
+                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all group border border-transparent hover:border-primary-200 dark:hover:bg-gray-800 dark:hover:border-gray-700"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 font-bold group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 font-bold group-hover:bg-primary-600 group-hover:text-white transition-colors dark:bg-primary-900 dark:text-primary-400 dark:group-hover:bg-primary-500 dark:group-hover:text-white">
                           {chapter.chapter_number}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors dark:text-white">
                             Capítulo {chapter.chapter_number}
                             {chapter.title && ` - ${chapter.title}`}
                           </h3>
-                          <div className="flex items-center gap-3 text-sm text-gray-500 mt-1">
+                          <div className="flex items-center gap-3 text-sm text-gray-500 mt-1 dark:text-gray-400">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
                               {formatDate(chapter.created_at)}
@@ -348,7 +348,7 @@ const NovelDetail = () => {
                         </div>
                       </div>
 
-                      <Play className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors" />
+                      <Play className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors dark:text-gray-500" />
                     </Link>
                   ))}
                 </div>
@@ -360,10 +360,10 @@ const NovelDetail = () => {
           <div className="space-y-6">
 
             <Card className="p-6">
-              <h3 className="font-bold text-gray-900 mb-4 text-lg">Informações</h3>
+              <h3 className="font-bold text-gray-900 mb-4 text-lg dark:text-white">Informações</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600 flex items-center gap-2">
+                  <span className="text-gray-600 flex items-center gap-2 dark:text-gray-400">
                     <BookOpen className="w-4 h-4" />
                     Capítulos
                   </span>
@@ -371,7 +371,7 @@ const NovelDetail = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600 flex items-center gap-2">
+                  <span className="text-gray-600 flex items-center gap-2 dark:text-gray-400">
                     <Eye className="w-4 h-4" />
                     Visualizações
                   </span>
@@ -381,7 +381,7 @@ const NovelDetail = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600 flex items-center gap-2">
+                  <span className="text-gray-600 flex items-center gap-2  dark:text-gray-400">
                     <Star className="w-4 h-4" />
                     Avaliação
                   </span>
@@ -391,7 +391,7 @@ const NovelDetail = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600 flex items-center gap-2">
+                  <span className="text-gray-600 flex items-center gap-2 dark:text-gray-400">
                     <Clock className="w-4 h-4" />
                     Status
                   </span>
@@ -408,22 +408,22 @@ const NovelDetail = () => {
 
             {currentNovel.uploader && (
               <Card className="p-6">
-                <h3 className="font-bold text-gray-900 mb-4 text-lg">Enviado por</h3>
+                <h3 className="font-bold text-gray-900 mb-4 text-lg dark:text-white">Enviado por</h3>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg dark:bg-primary-500">
                     {currentNovel.uploader.username?.charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <p className="font-semibold">{currentNovel.uploader.username}</p>
-                    <p className="text-sm text-gray-500">Uploader</p>
+                    <p className="text-sm text-gray-500">{currentNovel.uploader.role}</p>
                   </div>
                 </div>
               </Card>
             )}
 
-            <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100">
-              <h3 className="font-bold text-gray-900 mb-3">💡 Dica</h3>
-              <p className="text-sm text-gray-700">
+            <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/50 dark:to-primary-800/50">
+              <h3 className="font-bold text-gray-900 mb-3 dark:text-white">💡 Dica</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 Use as setas do teclado ← → para navegar entre as páginas da novel!
               </p>
             </Card>

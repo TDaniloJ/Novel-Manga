@@ -210,10 +210,10 @@ const onSubmit = async (data) => {
           Voltar
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {isEdit ? 'Editar Mangá' : 'Novo Mangá'}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             {isEdit ? 'Atualize as informações do mangá' : 'Preencha os dados para cadastrar um novo mangá'}
           </p>
         </div>
@@ -222,14 +222,14 @@ const onSubmit = async (data) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" encType="multipart/form-data">
         {/* Basic Info */}
         <Card className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Informações Básicas
           </h2>
 
           <div className="space-y-4">
             {/* Cover Image */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                 Capa
               </label>
               <div className="flex items-start gap-4">
@@ -243,18 +243,18 @@ const onSubmit = async (data) => {
                     <button
                       type="button"
                       onClick={clearCover}
-                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                      className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 transition"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
                 )}
-                <label className="flex-1 flex flex-col items-center justify-center h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition">
-                  <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                  <p className="text-sm text-gray-600">
+                <label className="flex-1 flex flex-col items-center justify-center h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition dark:border-gray-600 dark:hover:border-primary-400">
+                  <Upload className="w-8 h-8 text-gray-400 mb-2 dark:text-gray-300" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Clique para fazer upload da capa
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
                     PNG, JPG até 10MB
                   </p>
                   <input
@@ -267,7 +267,7 @@ const onSubmit = async (data) => {
               </div>
               {/* Mostrar nome do arquivo selecionado */}
               {coverFile && (
-                <p className="mt-2 text-sm text-green-600">
+                <p className="mt-2 text-sm text-green-600 dark:text-green-400">
                   ✅ Arquivo selecionado: {coverFile.name} ({Math.round(coverFile.size / 1024)} KB)
                 </p>
               )}
@@ -285,7 +285,7 @@ const onSubmit = async (data) => {
 
             {/* Alternative Titles */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                 Títulos Alternativos
               </label>
               <div className="space-y-2">
@@ -321,7 +321,7 @@ const onSubmit = async (data) => {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                 Sinopse *
               </label>
               <textarea
@@ -333,7 +333,7 @@ const onSubmit = async (data) => {
                 })}
               />
               {errors.description && (
-                <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.description.message}</p>
               )}
             </div>
 
@@ -378,7 +378,7 @@ const onSubmit = async (data) => {
 
         {/* Genres */}
         <Card className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 dark:text-white">
             Gêneros *
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -387,8 +387,8 @@ const onSubmit = async (data) => {
                 key={genre.id}
                 className={`flex items-center justify-center p-3 border-2 rounded-lg cursor-pointer transition ${
                   selectedGenres.includes(genre.id)
-                    ? 'border-primary-500 bg-primary-50 text-primary-700'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-primary-500 bg-primary-50 text-primary-700 dark:bg-primary-600 dark:text-primary-100'
+                    : 'border-gray-200 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent dark:hover:bg-gray-700/10'
                 }`}
               >
                 <input

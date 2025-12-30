@@ -139,7 +139,7 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 dark:text-white">
         <StatCard
           icon={BookOpen}
           label="Total de Mangás"
@@ -235,26 +235,26 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Link to="/admin/mangas">
               <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
-              <BookOpen className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
-              <p className="font-medium text-gray-900">Gerenciar Mangás</p>
+              <BookOpen className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600 dark:group-hover:text-primary-400" />
+              <p className="font-medium text-gray-900 dark:text-white">Gerenciar Mangás</p>
             </button>
           </Link>
           <Link to="/admin/novels">
             <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
-              <FileText className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
-              <p className="font-medium text-gray-900">Gerenciar Novels</p>
+              <FileText className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600 dark:group-hover:text-primary-400" />
+              <p className="font-medium text-gray-900 dark:text-white">Gerenciar Novels</p>
             </button>
           </Link>
           <Link to="/admin/genres">
             <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
-              <Tag className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
-              <p className="font-medium text-gray-900">Gerenciar Gêneros</p>
+              <Tag className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600 dark:group-hover:text-primary-400" />
+              <p className="font-medium text-gray-900 dark:text-white">Gerenciar Gêneros</p>
             </button>
           </Link>
           <Link to="/admin/users">
               <button className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition group">
-              <Users className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600" />
-              <p className="font-medium text-gray-900">Gerenciar Usuários</p>
+              <Users className="w-8 h-8 mx-auto mb-2 text-gray-600 group-hover:text-primary-600 dark:group-hover:text-primary-400" />
+              <p className="font-medium text-gray-900 dark:text-white">Gerenciar Usuários</p>
             </button>
           </Link>
         </div>
@@ -304,10 +304,10 @@ const ContentItem = ({ item, type, chaptersCount, editUrl }) => {
 
 const StatCard = ({ icon: Icon, label, value, color }) => {
   const colors = {
-    blue: 'bg-blue-100 text-blue-600',
-    green: 'bg-green-100 text-green-600',
-    purple: 'bg-purple-100 text-purple-600',
-    orange: 'bg-orange-100 text-orange-600'
+    blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/10 dark:text-blue-200',
+    green: 'bg-green-100 text-green-600 dark:bg-green-900/10 dark:text-green-200',
+    purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/10 dark:text-purple-200',
+    orange: 'bg-orange-100 text-orange-600 dark:bg-orange-900/10 dark:text-orange-200'
   };
 
   return (
@@ -317,8 +317,8 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
           <Icon className="w-6 h-6" />
         </div>
         <div>
-          <p className="text-sm text-gray-600">{label}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
         </div>
       </div>
     </Card>

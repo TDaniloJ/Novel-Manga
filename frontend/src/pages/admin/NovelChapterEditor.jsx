@@ -326,7 +326,7 @@ const NovelChapterEditor = () => {
           <div className="lg:col-span-2 space-y-4">
             {/* Chapter Info */}
             <Card className="p-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 dark:text-white">
                 <Input
                   label="Número do Capítulo *"
                   type="number"

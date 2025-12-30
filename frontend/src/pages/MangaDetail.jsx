@@ -138,9 +138,9 @@ const MangaDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section with Blur Background */}
-      <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden dark:from-gray-800 dark:to-gray-900">
         {/* Blurred Background Image */}
         {!imageError && imageUrl && (
           <div 
@@ -159,7 +159,7 @@ const MangaDetail = () => {
             variant="secondary"
             size="sm"
             onClick={() => navigate(-1)}
-            className="mb-4 bg-white/10 hover:bg-white/20 text-white border-0"
+            className="mb-4 bg-white/10 hover:bg-white/20 text-white border-0 dark:text-gray-200"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
@@ -294,12 +294,12 @@ const MangaDetail = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Synopsis */}
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2 dark:text-white">
                 <BookOpen className="w-6 h-6 text-primary-600" />
                 Sinopse
               </h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line dark:text-gray-300">
                   {currentManga.description || 'Sem descrição disponível.'}
                 </p>
               </div>
@@ -308,10 +308,10 @@ const MangaDetail = () => {
             {/* Chapters List */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 dark:text-white">
                   <BookOpen className="w-6 h-6 text-primary-600" />
                   Capítulos
-                  <span className="text-lg font-normal text-gray-500">
+                  <span className="text-lg font-normal text-gray-500 dark:text-gray-400">
                     ({sortedChapters.length})
                   </span>
                 </h2>
@@ -326,7 +326,7 @@ const MangaDetail = () => {
 
               {sortedChapters.length === 0 ? (
                 <div className="text-center py-12">
-                  <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4 dark:text-gray-600" />
                   <p className="text-gray-500 text-lg">Nenhum capítulo disponível ainda</p>
                 </div>
               ) : (
@@ -335,18 +335,18 @@ const MangaDetail = () => {
                     <Link
                       key={chapter.id}
                       to={`/manga/${currentManga.id}/chapter/${chapter.id}`}
-                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all group border border-transparent hover:border-primary-200"
+                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all group border border-transparent hover:border-primary-200 dark:hover:bg-gray-800 dark:hover:border-gray-600"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 font-bold group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 font-bold group-hover:bg-primary-600 group-hover:text-white transition-colors dark:bg-primary-900/50 dark:group-hover:bg-primary-600">
                           {chapter.chapter_number}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors dark:text-gray-200">
                             Capítulo {chapter.chapter_number}
                             {chapter.title && ` - ${chapter.title}`}
                           </h3>
-                          <div className="flex items-center gap-3 text-sm text-gray-500 mt-1">
+                          <div className="flex items-center gap-3 text-sm text-gray-500 mt-1 dark:text-gray-400">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
                               {formatDate(chapter.created_at)}
@@ -358,7 +358,7 @@ const MangaDetail = () => {
                           </div>
                         </div>
                       </div>
-                      <Play className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors" />
+                      <Play className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors dark:group-hover:text-primary-600" />
                     </Link>
                   ))}
                 </div>
@@ -370,37 +370,37 @@ const MangaDetail = () => {
           <div className="space-y-6">
             {/* Quick Stats */}
             <Card className="p-6">
-              <h3 className="font-bold text-gray-900 mb-4 text-lg">Informações</h3>
+              <h3 className="font-bold text-gray-900 mb-4 text-lg dark:text-white">Informações</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                     <BookOpen className="w-4 h-4" />
                     <span>Capítulos</span>
                   </div>
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold text-gray-900 dark:text-gray-200">
                     {sortedChapters.length}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                     <Eye className="w-4 h-4" />
                     <span>Visualizações</span>
                   </div>
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold text-gray-900 dark:text-gray-200">
                     {formatNumber(currentManga.views)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                     <Star className="w-4 h-4" />
                     <span>Avaliação</span>
                   </div>
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold text-gray-900 dark:text-gray-200">
                     {currentManga.rating > 0 ? currentManga.rating.toFixed(1) : 'N/A'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                     <Clock className="w-4 h-4" />
                     <span>Status</span>
                   </div>
@@ -418,25 +418,25 @@ const MangaDetail = () => {
             {/* Uploader Info */}
             {currentManga.uploader && (
               <Card className="p-6">
-                <h3 className="font-bold text-gray-900 mb-4 text-lg">Enviado por</h3>
+                <h3 className="font-bold text-gray-900 mb-4 text-lg dark:text-white">Enviado por</h3>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg dark:bg-primary-400">
                     {currentManga.uploader.username?.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">
+                    <p className="font-semibold text-gray-900 dark:text-gray-200">
                       {currentManga.uploader.username}
                     </p>
-                    <p className="text-sm text-gray-500">Uploader</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">ID: {currentManga.uploader.id}</p>
                   </div>
                 </div>
               </Card>
             )}
 
             {/* Additional Info */}
-            <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100">
-              <h3 className="font-bold text-gray-900 mb-3">💡 Dica</h3>
-              <p className="text-sm text-gray-700">
+            <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/50 dark:to-primary-800/50">
+              <h3 className="font-bold text-gray-900 mb-3 dark:text-white">💡 Dica</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 Use as setas do teclado ← → para navegar entre as páginas durante a leitura!
               </p>
             </Card>

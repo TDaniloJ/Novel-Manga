@@ -23,6 +23,10 @@ import Profile from './pages/Profile';
 import Favorites from './pages/Favorites';
 import History from './pages/History';
 import Search from './pages/Search';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import FAQ from './pages/FAQ';
+import Contact from './pages/Contact';
 
 // Admin Pages
 import Dashboard from './pages/admin/Dashboard';
@@ -35,7 +39,6 @@ import GenreManagement from './pages/admin/GenreManagement';
 import UserManagement from './pages/admin/UserManagement';
 import MangaChapterManager from './pages/admin/MangaChapterManager';
 import NovelChapterManager from './pages/admin/NovelChapterManager';
-
 import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Protected Route Component
@@ -104,6 +107,10 @@ function App() {
           <Route path="/manga/:id" element={<Layout><MangaDetail /></Layout>} />
           <Route path="/novels" element={<Layout><NovelList /></Layout>} />
           <Route path="/novel/:id" element={<Layout><NovelDetail /></Layout>} />
+          <Route path="/terms" element={<Layout><Terms /></Layout>} />
+          <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
+          <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
 
           {/* Auth Routes without Layout */}
           <Route path="/login" element={<Login />} />
@@ -112,6 +119,8 @@ function App() {
           {/* Reader Routes without Layout */}
           <Route path="/manga/:mangaId/chapter/:chapterId" element={<MangaReader />} />
           <Route path="/novel/:novelId/chapter/:chapterId" element={<NovelReader />} />
+
+
 
           {/* Protected Routes with Layout */}
           <Route
@@ -140,14 +149,14 @@ function App() {
           />
           <Route path="/search" element={<Layout><Search /></Layout>} />
 
-<Route 
-  path="/manga/:mangaId/chapter/:chapterId" 
-  element={
-    <ErrorBoundary>
-      <MangaReader />
-    </ErrorBoundary>
-  } 
-/>
+          <Route 
+            path="/manga/:mangaId/chapter/:chapterId" 
+            element={
+              <ErrorBoundary>
+                <MangaReader />
+              </ErrorBoundary>
+            } 
+          />
 
           {/* Admin Routes */}
           <Route
@@ -168,9 +177,6 @@ function App() {
             <Route path="novels/:id/edit" element={<NovelForm />} />
             <Route path="novels/:id/chapters" element={<NovelChapterManager />} />
             <Route path="genres" element={<GenreManagement />} />
-            
-            
-
             
             <Route
               path="users"

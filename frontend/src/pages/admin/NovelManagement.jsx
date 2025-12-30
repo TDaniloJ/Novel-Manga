@@ -96,8 +96,8 @@ const NovelManagement = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gerenciar Novels</h1>
-          <p className="text-gray-600">
-            {pagination.total} novel{pagination.total !== 1 ? 's' : ''} cadastrada{pagination.total !== 1 ? 's' : ''}
+          <p className="text-gray-600 dark:text-gray-200">
+            {pagination.total} Novel{pagination.total !== 1 ? 's' : ''} Cadastrada{pagination.total !== 1 ? 's' : ''}
           </p>
         </div>
         <Link to="/admin/novels/new">
@@ -130,31 +130,31 @@ const NovelManagement = () => {
           <Card className="overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-gray-50 border-b dark:bg-gray-700 dark:border-gray-600">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Novel
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Capítulos
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Views
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Criado em
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase dark:text-gray-300">
                       Ações
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {novels.map((novel) => (
-                    <tr key={novel.id} className="hover:bg-gray-50">
+                    <tr key={novel.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <img
@@ -164,8 +164,8 @@ const NovelManagement = () => {
                             onError={(e) => {
                               e.target.style.display = 'none';
                               e.target.parentElement.innerHTML = `
-                                <div class="w-12 h-16 flex items-center justify-center bg-gray-300 rounded">
-                                  <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="w-12 h-16 flex items-center justify-center bg-gray-300 rounded dark:bg-gray-600">
+                                  <svg class="w-6 h-6 text-gray-400 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                   </svg>
                                 </div>
@@ -173,10 +173,10 @@ const NovelManagement = () => {
                             }}
                           />
                           <div>
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-gray-900 dark:text-white">
                               {novel.title}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
                               {novel.author}
                             </p>
                           </div>
@@ -184,51 +184,51 @@ const NovelManagement = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          novel.status === 'ongoing' ? 'bg-green-100 text-green-800' :
-                          novel.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                          'bg-yellow-100 text-yellow-800'
+                          novel.status === 'ongoing' ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' :
+                          novel.status === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100' :
+                          'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
                         }`}>
                           {novel.status === 'ongoing' ? 'Ativo' :
                            novel.status === 'completed' ? 'Completo' : 'Hiato'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {/* ✅ ATUALIZADO PARA USAR A NOVA CONTAGEM */}
                         {getChaptersCount(novel) === '...' ? (
-                          <span className="text-gray-400">Carregando...</span>
+                          <span className="text-gray-400 dark:text-gray-500">Carregando...</span>
                         ) : (
                           getChaptersCount(novel)
                         )}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {formatNumber(novel.views)}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-white">
                         {formatDate(novel.created_at)}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Link to={`/admin/novels/${novel.id}/chapters`}>
                             <button 
-                              className="p-2 text-gray-600 hover:text-primary-600 transition"
+                              className="p-2 text-gray-600 hover:text-primary-600 transition dark:text-gray-300 dark:hover:text-primary-400"
                               title="Gerenciar capítulos"
                             >
                               <List className="w-4 h-4" />
                             </button>
                           </Link>
                           <Link to={`/novel/${novel.id}`}>
-                            <button className="p-2 text-gray-600 hover:text-primary-600 transition">
+                            <button className="p-2 text-gray-600 hover:text-primary-600 transition dark:text-gray-300 dark:hover:text-primary-400">
                               <Eye className="w-4 h-4" />
                             </button>
                           </Link>
                           <Link to={`/admin/novels/${novel.id}/edit`}>
-                            <button className="p-2 text-gray-600 hover:text-primary-600 transition">
+                            <button className="p-2 text-gray-600 hover:text-primary-600 transition dark:text-gray-300 dark:hover:text-primary-400">
                               <Edit className="w-4 h-4" />
                             </button>
                           </Link>
                           <button
                             onClick={() => handleDelete(novel.id, novel.title)}
-                            className="p-2 text-gray-600 hover:text-red-600 transition"
+                            className="p-2 text-gray-600 hover:text-red-600 transition dark:text-gray-300 dark:hover:text-red-400"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

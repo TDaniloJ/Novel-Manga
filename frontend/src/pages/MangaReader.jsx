@@ -290,9 +290,9 @@ const MangaReader = () => {
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 dark:bg-gray-900/50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[80vh] overflow-y-auto dark:bg-gray-800">
+            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white dark:bg-gray-800">
               <h3 className="text-xl font-semibold">Configurações de Leitura</h3>
               <button onClick={() => setShowSettings(false)}>
                 <X className="w-5 h-5" />
@@ -302,36 +302,36 @@ const MangaReader = () => {
             <div className="p-4 space-y-6">
               {/* Reading Mode */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                   Modo de Leitura
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     onClick={() => setReadingMode('single')}
-                    className={`p-3 border-2 rounded-lg text-sm font-medium transition ${
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition hover:border-gray-300 dark:bg-transparent ${
                       readingMode === 'single'
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-primary-500 bg-primary-50 text-primary-700 dark:text-primary-700'
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent'
                     }`}
                   >
                     Página Única
                   </button>
                   <button
                     onClick={() => setReadingMode('double')}
-                    className={`p-3 border-2 rounded-lg text-sm font-medium transition ${
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition hover:border-gray-300 dark:bg-transparent ${
                       readingMode === 'double'
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-primary-500 bg-primary-50 text-primary-700 dark:text-primary-700'
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent'
                     }`}
                   >
                     Página Dupla
                   </button>
                   <button
                     onClick={() => setReadingMode('continuous')}
-                    className={`p-3 border-2 rounded-lg text-sm font-medium transition ${
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition hover:border-gray-300 dark:bg-transparent ${
                       readingMode === 'continuous'
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-primary-500 bg-primary-50 text-primary-700 dark:text-primary-700'
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent'
                     }`}
                   >
                     Contínuo
@@ -342,13 +342,13 @@ const MangaReader = () => {
               {/* Fit Mode */}
               {readingMode !== 'continuous' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                     Ajuste da Imagem
                   </label>
                   <select
                     value={fitMode}
                     onChange={(e) => setFitMode(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-lg"
+                    className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
                   >
                     <option value="fit-width">Ajustar à Largura</option>
                     <option value="fit-height">Ajustar à Altura</option>
@@ -360,7 +360,7 @@ const MangaReader = () => {
 
               {/* Background Color */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                   Cor de Fundo
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -373,13 +373,13 @@ const MangaReader = () => {
                     <button
                       key={color.value}
                       onClick={() => setBackgroundColor(color.value)}
-                      className={`p-3 border-2 rounded-lg text-xs font-medium transition ${
+                      className={`p-3 border-2 rounded-lg text-xs font-medium transition hover:border-gray-300 dark:bg-transparent ${
                         backgroundColor === color.value
                           ? 'border-primary-500'
-                          : 'border-gray-200'
+                          : 'border-gray-200 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-transparent'
                       }`}
                     >
-                      <div className={`w-full h-8 rounded mb-1 ${color.class} ${color.value === 'white' ? 'border border-gray-300' : ''}`} />
+                      <div className={`w-full h-8 rounded mb-1 ${color.class} ${color.value === 'white' ? 'border border-gray-300 dark:border-gray-600' : ''}`} />
                       {color.label}
                     </button>
                   ))}
@@ -395,7 +395,7 @@ const MangaReader = () => {
                     onChange={(e) => setAutoAdvance(e.target.checked)}
                     className="w-4 h-4 rounded"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Avançar automaticamente para próximo capítulo
                   </span>
                 </label>
@@ -403,7 +403,7 @@ const MangaReader = () => {
 
               {/* Preload Pages */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                   Pré-carregar Páginas: {preloadPages}
                 </label>
                 <input
@@ -414,20 +414,20 @@ const MangaReader = () => {
                   onChange={(e) => setPreloadPages(Number(e.target.value))}
                   className="w-full"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
                   Mais páginas = Navegação mais fluida, mas usa mais dados
                 </p>
               </div>
 
               {/* Keyboard Shortcuts */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-50 rounded-lg p-4 dark:bg-gray-700">
                 <h4 className="font-semibold text-sm mb-2">Atalhos de Teclado</h4>
-                <div className="space-y-1 text-xs text-gray-600">
-                  <p><kbd className="px-2 py-1 bg-white border rounded">→</kbd> ou <kbd className="px-2 py-1 bg-white border rounded">Space</kbd> - Próxima página</p>
-                  <p><kbd className="px-2 py-1 bg-white border rounded">←</kbd> - Página anterior</p>
-                  <p><kbd className="px-2 py-1 bg-white border rounded">F</kbd> - Tela cheia</p>
-                  <p><kbd className="px-2 py-1 bg-white border rounded">Home</kbd> - Primeira página</p>
-                  <p><kbd className="px-2 py-1 bg-white border rounded">End</kbd> - Última página</p>
+                <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
+                  <p><kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">→</kbd> ou <kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">Space</kbd> - Próxima página</p>
+                  <p><kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">←</kbd> - Página anterior</p>
+                  <p><kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">F</kbd> - Tela cheia</p>
+                  <p><kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">Home</kbd> - Primeira página</p>
+                  <p><kbd className="px-2 py-1 bg-white border rounded dark:bg-gray-800">End</kbd> - Última página</p>
                 </div>
               </div>
 

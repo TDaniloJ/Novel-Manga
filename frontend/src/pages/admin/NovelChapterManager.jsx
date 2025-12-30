@@ -200,6 +200,7 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [showAiOptions, setShowAiOptions] = useState(false);
+    const [aiSimulated, setAiSimulated] = useState(false);
   const [showWorldbuilding, setShowWorldbuilding] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
   const [providerConfig, setProviderConfig] = useState({ provider: 'anthropic' }); // ✅ VALOR PADRÃO
@@ -209,6 +210,10 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
     content: ''
   });
   const textareaRef = useRef(null);
+  const [showIdeasModal, setShowIdeasModal] = useState(false);
+  const [ideasList, setIdeasList] = useState([]);
+  const [aiRawResponse, setAiRawResponse] = useState(null);
+  const [showAiDetails, setShowAiDetails] = useState(false);
 
   useEffect(() => {
     if (chapter) {
@@ -260,7 +265,14 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             aiPrompt,
             providerConfig
           );
-          setFormData(prev => ({ ...prev, content: result.content }));
+          if (result.simulated) {
+            setAiSimulated(true);
+            toast('Resposta de IA simulada (configure chaves API no backend)', { icon: '⚠️' });
+          } else {
+            setAiSimulated(false);
+          }
+
+          setFormData(prev => ({ ...prev, content: result.content ? result.content.replace(/^#SIMULATED_RESPONSE#[\s\S]*?\n\n/, '') : '' }));
           toast.success('Capítulo gerado!');
           break;
           
@@ -270,7 +282,13 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             return;
           }
           result = await aiService.improveContent(formData.content, aiPrompt, providerConfig);
-          setFormData(prev => ({ ...prev, content: result.content }));
+          if (result.simulated) {
+            setAiSimulated(true);
+            toast('Resposta de IA simulada (configure chaves API no backend)', { icon: '⚠️' });
+          } else {
+            setAiSimulated(false);
+          }
+          setFormData(prev => ({ ...prev, content: result.content ? result.content.replace(/^#SIMULATED_RESPONSE#[\s\S]*?\n\n/, '') : '' }));
           toast.success('Texto melhorado!');
           break;
           
@@ -280,13 +298,33 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             return;
           }
           result = await aiService.continueText(novelId, formData.content, aiPrompt, providerConfig);
-          setFormData(prev => ({ ...prev, content: prev.content + '\n\n' + result.content }));
+          if (result.simulated) {
+            setAiSimulated(true);
+            toast('Resposta de IA simulada (configure chaves API no backend)', { icon: '⚠️' });
+          } else {
+            setAiSimulated(false);
+          }
+          setFormData(prev => ({ ...prev, content: prev.content + '\n\n' + (result.content ? result.content.replace(/^#SIMULATED_RESPONSE#[\s\S]*?\n\n/, '') : '') }));
           toast.success('Texto continuado!');
           break;
           
         case 'ideas':
           result = await aiService.getChapterIdeas(novelId, providerConfig);
-          alert("💡 Ideias geradas:\n\n" + result.ideas);
+          // Normaliza ideias para array e abre modal bonito
+          const ideas = Array.isArray(result.ideas)
+            ? result.ideas
+            : result.ideas
+            ? [result.ideas]
+            : (Array.isArray(result) ? result : [JSON.stringify(result)]);
+          setIdeasList(ideas);
+          setShowIdeasModal(true);
+          if (result.simulated) {
+            setAiSimulated(true);
+            setAiRawResponse(result.content || JSON.stringify(result));
+            toast('Resposta de IA simulada (configure chaves API no backend)', { icon: '⚠️' });
+          } else {
+            setAiRawResponse(null);
+          }
           break;
       }
       
@@ -308,6 +346,18 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
       size="xl"
     >
       <form onSubmit={handleSubmit} className="space-y-4">
+        {aiSimulated && (
+          <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded flex items-start justify-between">
+            <div>
+              <strong>Atenção:</strong> Resposta de IA simulada — as chaves de API do provedor não estão configuradas no backend.
+              Insira as chaves em <code>.env</code> e reinicie o servidor para obter respostas reais.
+            </div>
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={() => setShowAiDetails(true)} className="text-sm underline">Ver detalhes</button>
+              <button type="button" onClick={() => setAiSimulated(false)} className="ml-4 text-sm underline">Fechar</button>
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Número do Capítulo *"
@@ -460,12 +510,39 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             </div>
           )}
 
+            {/* Modal de Ideias geradas */}
+            {showIdeasModal && (
+              <Modal isOpen={true} onClose={() => setShowIdeasModal(false)} title="Ideias geradas pela IA">
+                <div className="space-y-3">
+                  {ideasList.map((idea, idx) => (
+                    <div key={idx} className="p-3 border rounded bg-white flex items-start justify-between">
+                      <div className="text-sm text-gray-800 whitespace-pre-wrap">{typeof idea === 'string' ? idea : JSON.stringify(idea)}</div>
+                      <div className="ml-4 flex-shrink-0">
+                        <Button size="sm" type="button" onClick={async () => { await navigator.clipboard.writeText(typeof idea === 'string' ? idea : JSON.stringify(idea)); toast.success('Copiado para a área de transferência'); }}>
+                          Copiar
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Modal>
+            )}
+
+            {/* Modal de detalhes da resposta da IA (bruta) */}
+            {showAiDetails && (
+              <Modal isOpen={true} onClose={() => setShowAiDetails(false)} title="Detalhes da resposta da IA">
+                <div className="p-3 bg-gray-50 rounded">
+                  <pre className="text-xs whitespace-pre-wrap break-words">{aiRawResponse || 'Nenhum detalhe disponível'}</pre>
+                </div>
+              </Modal>
+            )}
+
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-white">
               Conteúdo *
             </label>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {formData.content.length} caracteres
             </span>
           </div>
@@ -474,7 +551,7 @@ const NovelChapterModal = ({ novelId, chapter, onClose, onSuccess }) => {
             value={formData.content}
             onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
             rows={16}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent font-serif resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent font-serif resize-none dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-400 dark:focus:border-transparent"
             placeholder="Digite o texto do capítulo aqui ou use as ferramentas de IA..."
             required
           />

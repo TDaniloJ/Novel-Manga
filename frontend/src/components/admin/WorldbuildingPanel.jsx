@@ -95,7 +95,7 @@ const WorldbuildingPanel = ({ novelId, onSelect }) => {
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+        <h3 className="font-semibold text-gray-900 flex items-center gap-2 dark:text-white">
           <Globe className="w-5 h-5 text-primary-600" />
           Worldbuilding
         </h3>
@@ -107,6 +107,7 @@ const WorldbuildingPanel = ({ novelId, onSelect }) => {
           const Icon = tab.icon;
           return (
             <button
+              type="button"
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition ${
@@ -135,8 +136,12 @@ const WorldbuildingPanel = ({ novelId, onSelect }) => {
               onClick={() => handleCreate('character')}
               className="w-full"
             >
+
+              <span className="w-full">
               <Plus className="w-4 h-4 mr-2" />
               Adicionar Personagem
+
+              </span>
             </Button>
 
             {characters.map((char) => (
@@ -270,6 +275,7 @@ const CharacterCard = ({ character, onEdit, onDelete, onSelect }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             onClick={() => setShowDetails(!showDetails)}
             className="p-1 text-gray-600 hover:text-primary-600 transition"
             title={showDetails ? 'Ocultar' : 'Ver detalhes'}
@@ -277,12 +283,14 @@ const CharacterCard = ({ character, onEdit, onDelete, onSelect }) => {
             {showDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
           <button
+            type="button"
             onClick={onEdit}
             className="p-1 text-gray-600 hover:text-primary-600 transition"
           >
             <Edit className="w-4 h-4" />
           </button>
           <button
+            type="button"
             onClick={onDelete}
             className="p-1 text-gray-600 hover:text-red-600 transition"
           >
@@ -292,6 +300,7 @@ const CharacterCard = ({ character, onEdit, onDelete, onSelect }) => {
       </div>
 
       <button
+        type="button"
         onClick={() => onSelect(character)}
         className="mt-2 w-full text-xs text-primary-600 hover:text-primary-700 font-medium"
       >
@@ -312,16 +321,17 @@ const WorldCard = ({ world, onEdit, onDelete, onSelect }) => {
         </div>
 
         <div className="flex gap-1">
-          <button onClick={onEdit} className="p-1 text-gray-600 hover:text-primary-600 transition">
+          <button type="button" onClick={onEdit} className="p-1 text-gray-600 hover:text-primary-600 transition">
             <Edit className="w-4 h-4" />
           </button>
-          <button onClick={onDelete} className="p-1 text-gray-600 hover:text-red-600 transition">
+          <button type="button" onClick={onDelete} className="p-1 text-gray-600 hover:text-red-600 transition">
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       <button
+        type="button"
         onClick={() => onSelect(world)}
         className="mt-2 w-full text-xs text-primary-600 hover:text-primary-700 font-medium"
       >
@@ -337,6 +347,7 @@ const MagicSystemCard = ({ system, onSelect }) => (
     <h4 className="font-semibold text-purple-900">{system.name}</h4>
     <p className="text-sm text-purple-700 line-clamp-2">{system.description}</p>
     <button
+      type="button"
       onClick={() => onSelect(system)}
       className="mt-2 w-full text-xs text-purple-600 hover:text-purple-700 font-medium"
     >
@@ -355,6 +366,7 @@ const CultivationSystemCard = ({ system, onSelect }) => (
       ))}
     </div>
     <button
+      type="button"
       onClick={() => onSelect(system)}
       className="mt-2 w-full text-xs text-orange-600 hover:text-orange-700 font-medium"
     >

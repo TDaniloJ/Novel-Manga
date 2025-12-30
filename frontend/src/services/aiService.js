@@ -3,44 +3,59 @@ import api from './api';
 export const aiService = {
   // Gerar capítulo completo
   async generateChapter(novelId, chapterNumber, title, userPrompt, config = {}) {
-    const response = await api.post('/ai/generate-chapter', {
-      novel_id: novelId,
-      chapter_number: chapterNumber,
-      title,
-      user_prompt: userPrompt,
+    const body = {
+      novelId: novelId,
+      chapterNumber: chapterNumber,
+      chapterTitle: title,
+      userPrompt: userPrompt,
       ...config
-    });
-    return response.data;
+    };
+
+    const response = await api.post('/ai/generate-chapter', body);
+    const content = response.data?.content;
+    return {
+      content,
+      provider: response.data?.provider,
+      simulated: typeof content === 'string' && content.startsWith('#SIMULATED_RESPONSE#')
+    };
   },
 
   // Melhorar texto existente
   async improveContent(content, userPrompt, config = {}) {
-    const response = await api.post('/ai/improve-content', {
+    const body = {
       content,
-      user_prompt: userPrompt,
+      improvementPrompt: userPrompt,
       ...config
-    });
-    return response.data;
+    };
+
+    const response = await api.post('/ai/improve-content', body);
+    const result = response.data?.content;
+    return { content: result, provider: response.data?.provider, simulated: typeof result === 'string' && result.startsWith('#SIMULATED_RESPONSE#') };
   },
 
   // Continuar história
   async continueText(novelId, currentContent, userPrompt, config = {}) {
-    const response = await api.post('/ai/continue-text', {
-      novel_id: novelId,
-      current_content: currentContent,
-      user_prompt: userPrompt,
+    const body = {
+      novelId: novelId,
+      previousContent: currentContent,
+      userInstructions: userPrompt,
       ...config
-    });
-    return response.data;
+    };
+
+    const response = await api.post('/ai/continue-text', body);
+    const result = response.data?.content;
+    return { content: result, provider: response.data?.provider, simulated: typeof result === 'string' && result.startsWith('#SIMULATED_RESPONSE#') };
   },
 
   // Gerar ideias
   async getChapterIdeas(novelId, config = {}) {
-    const response = await api.post('/ai/chapter-ideas', {
-      novel_id: novelId,
-      ...config
-    });
-    return response.data;
+    // backend expects GET /ai/chapter-ideas/:novelId
+    const params = {};
+    if (config.provider) params.provider = config.provider;
+    if (config.model) params.model = config.model;
+
+    const response = await api.get(`/ai/chapter-ideas/${novelId}`, { params });
+    return { ideas: response.data?.ideas, provider: response.data?.provider };
   },
 
   // Gerar personagem

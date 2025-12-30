@@ -30,20 +30,20 @@ const Login = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800">
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
           <div className="text-center">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="p-3 bg-primary-600 rounded-2xl">
-                <BookOpen className="w-8 h-8 text-white" />
+              <div className="p-3 bg-primary-600 rounded-2xl dark:bg-primary-500">
+                <BookOpen className="w-8 h-8 text-white dark:text-gray-900" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">MN Studio</span>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">MN Studio</span>
             </Link>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 dark:text-white">
               Bem-vindo de volta
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Entre para continuar sua jornada de leitura
             </p>
           </div>
@@ -53,12 +53,12 @@ const Login = () => {
             <div className="space-y-4">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                   Email
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-gray-300" />
                   </div>
                   <input
                     type="email"
@@ -74,18 +74,18 @@ const Login = () => {
                   />
                 </div>
                 {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                   Senha
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-5 w-5 text-gray-400 dark:text-gray-300" />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -105,14 +105,14 @@ const Login = () => {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-300" />
                     ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-300" />
                     )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
                 )}
               </div>
             </div>
@@ -122,13 +122,13 @@ const Login = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-400 dark:ring-offset-gray-800"
                 />
-                <span className="ml-2 text-sm text-gray-600">Lembrar-me</span>
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">Lembrar-me</span>
               </label>
               <Link
                 to="/forgot-password"
-                className="text-sm font-medium text-primary-600 hover:text-primary-700"
+                className="text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500"
               >
                 Esqueceu a senha?
               </Link>
@@ -148,10 +148,10 @@ const Login = () => {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">ou</span>
+                <span className="px-2 bg-white text-gray-500 dark:bg-gray-900 dark:text-gray-400">ou</span>
               </div>
             </div>
 
@@ -161,7 +161,7 @@ const Login = () => {
                 Não tem uma conta?{' '}
                 <Link
                   to="/register"
-                  className="font-medium text-primary-600 hover:text-primary-700"
+                  className="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500"
                 >
                   Cadastre-se gratuitamente
                 </Link>
@@ -172,45 +172,45 @@ const Login = () => {
       </div>
 
       {/* Right Side - Image/Illustration */}
-      <div className="hidden lg:block lg:flex-1 relative bg-gradient-to-br from-primary-600 to-primary-800">
+      <div className="hidden lg:block lg:flex-1 relative bg-gradient-to-br from-primary-600 to-primary-800 dark:from-primary-500 dark:to-primary-700 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center p-12">
-          <div className="max-w-lg text-white">
+          <div className="max-w-lg text-white dark:text-gray-200">
             <h2 className="text-4xl font-bold mb-6">
               Sua biblioteca de mangás e novels
             </h2>
-            <p className="text-xl text-primary-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8 dark:text-gray-300">
               Acesse milhares de títulos, acompanhe seu progresso de leitura e descubra novas histórias incríveis.
             </p>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center dark:bg-gray-700">
                   <BookOpen className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Conteúdo atualizado</h3>
-                  <p className="text-primary-100 text-sm">Novos capítulos adicionados diariamente</p>
+                  <p className="text-primary-100 text-sm dark:text-gray-300">Novos capítulos adicionados diariamente</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center dark:bg-gray-700">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Totalmente gratuito</h3>
-                  <p className="text-primary-100 text-sm">Sem taxas ou assinaturas</p>
+                  <p className="text-primary-100 text-sm dark:text-gray-300">Sem taxas ou assinaturas</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center dark:bg-gray-700">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Continue de onde parou</h3>
-                  <p className="text-primary-100 text-sm">Histórico de leitura sincronizado</p>
+                  <p className="text-primary-100 text-sm dark:text-gray-300">Histórico de leitura sincronizado</p>
                 </div>
               </div>
             </div>
@@ -218,8 +218,8 @@ const Login = () => {
         </div>
         
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl dark:bg-white/5"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl dark:bg-white/5"></div>
       </div>
     </div>
   );

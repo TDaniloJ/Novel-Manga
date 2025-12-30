@@ -4,11 +4,20 @@ const fs = require('fs');
 
 // cria pastas caso não existam
 const baseDir = path.join(__dirname, '../../uploads');
-const mangaDir = path.join(baseDir, 'manga');
-const novelDir = path.join(baseDir, 'novel');
-const avatarDir = path.join(baseDir, 'avatars');
+const dirsToEnsure = [
+  'manga',
+  'novel',
+  'avatars',
+  // worldbuilding folders
+  'characters',
+  'worlds',
+  'items',
+  'organizations',
+  'timeline'
+];
 
-[mangaDir, novelDir, avatarDir].forEach(dir => {
+dirsToEnsure.forEach(name => {
+  const dir = path.join(baseDir, name);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -24,12 +33,15 @@ const storage = multer.diskStorage({
 
     let folder = baseDir;
 
-    if (req.baseUrl.includes('/mangas')) {
-      folder = mangaDir;
-    } else if (req.baseUrl.includes('/novels')) {
-      folder = novelDir;
-    } else if (req.baseUrl.includes('/auth') || req.baseUrl.includes('/user')) {
-      folder = avatarDir;
+    if (req.baseUrl && req.baseUrl.includes('/mangas')) {
+      folder = path.join(baseDir, 'manga');
+    } else if (req.baseUrl && req.baseUrl.includes('/novels')) {
+      folder = path.join(baseDir, 'novel');
+    } else if (req.baseUrl && (req.baseUrl.includes('/auth') || req.baseUrl.includes('/user'))) {
+      folder = path.join(baseDir, 'avatars');
+    } else if (req.baseUrl && req.baseUrl.includes('/worldbuilding')) {
+      // colocar arquivos temporários na pasta base; controllers movem/transformam para subpastas específicas
+      folder = baseDir;
     }
 
     console.log('🎯 Multer - Pasta destino:', folder);
