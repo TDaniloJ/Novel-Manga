@@ -24,6 +24,7 @@ db.Favorite = require('./Favorite')(sequelize, Sequelize);
 db.ReadingHistory = require('./ReadingHistory')(sequelize, Sequelize);
 db.Comment = require('./Comment')(sequelize, Sequelize);
 db.Session = require('./Session')(sequelize, Sequelize);
+db.Settings = require('./Settings')(sequelize, Sequelize);
 
 // ✅ ADICIONAR NOVOS MODELS DE WORLDBUILDING
 db.Character = require('./Character')(sequelize, Sequelize);

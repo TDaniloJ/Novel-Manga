@@ -25,6 +25,16 @@ const MangaPage = require('./src/models/MangaPage')(sequelize, DataTypes);
 const Favorite = require('./src/models/Favorite')(sequelize, DataTypes);
 const ReadingHistory = require('./src/models/ReadingHistory')(sequelize, DataTypes);
 const Comment = require('./src/models/Comment')(sequelize, DataTypes);
+const Settings = require('./src/models/Settings')(sequelize, DataTypes);
+const Session = require('./src/models/Session')(sequelize, DataTypes);
+const Character = require('./src/models/Character')(sequelize, DataTypes);
+const World = require('./src/models/World')(sequelize, DataTypes);
+const Timeline = require('./src/models/Timeline')(sequelize, DataTypes);
+const Organization = require('./src/models/Organization')(sequelize, DataTypes);
+const Item = require('./src/models/Item')(sequelize, DataTypes);
+const CultivationSystem = require('./src/models/CultivationSystem')(sequelize, DataTypes);
+const MagicSystem = require('./src/models/MagicSystem')(sequelize, DataTypes);
+const seedSettings = require('./src/utils/seedSettings');
 
 // Objeto com todos os models
 const models = {
@@ -37,7 +47,16 @@ const models = {
   MangaPage,
   Favorite,
   ReadingHistory,
-  Comment
+  Comment,
+  Settings,
+  Session,
+  Character,
+  World,
+  Timeline,
+  Organization,
+  Item,
+  CultivationSystem,
+  MagicSystem
 };
 
 // Configurar associações
@@ -87,6 +106,33 @@ const syncDatabase = async () => {
     
     await Comment.sync({ alter: true });
     console.log('✅ Tabela comments criada');
+
+    await Settings.sync({ alter: true });
+    console.log('✅ Tabela settings criada');
+
+    await Session.sync({ alter: true });
+    console.log('✅ Tabela sessions criada');
+
+    await Character.sync({ alter: true });
+    console.log('✅ Tabela characters criada');
+
+    await World.sync({ alter: true });
+    console.log('✅ Tabela worlds criada');
+
+    await Timeline.sync({ alter: true });
+    console.log('✅ Tabela timelines criada');
+
+    await Organization.sync({ alter: true });
+    console.log('✅ Tabela organizations criada');
+
+    await Item.sync({ alter: true });
+    console.log('✅ Tabela items criada');
+
+    await CultivationSystem.sync({ alter: true });
+    console.log('✅ Tabela cultivation_systems criada');
+
+    await MagicSystem.sync({ alter: true });
+    console.log('✅ Tabela magic_systems criada');
 
     // Criar tabelas de junção (many-to-many)
     await sequelize.queryInterface.createTable('manga_genres', {
@@ -151,6 +197,10 @@ const syncDatabase = async () => {
     console.log('🔄 Populando gêneros...');
     await populateGenres();
 
+    // Popular configurações
+    console.log('🔄 Populando configurações...');
+    await seedSettings();
+
     console.log('✅ Banco de dados totalmente configurado!');
     await sequelize.close();
     process.exit(0);
@@ -183,4 +233,6 @@ const populateGenres = async () => {
   console.log(`✅ ${count} gêneros inseridos (${genres.length} total no banco)!`);
 };
 
-syncDatabase();
+(async () => {
+  await syncDatabase();
+})();

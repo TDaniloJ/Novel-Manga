@@ -24,6 +24,8 @@ import { readingHistoryService } from '../services/readingHistoryService';
 import { useAuthStore } from '../store/authStore';
 import Loading from '../components/common/Loading';
 import Button from '../components/common/Button';
+import Modal from '../components/common/Modal';
+import { useSettingsStore } from '../store/settingsStore';
 
 const NovelReader = () => {
   const { novelId, chapterId } = useParams();
@@ -36,6 +38,10 @@ const NovelReader = () => {
   const [loading, setLoading] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showChapters, setShowChapters] = useState(false);
+  const [showNextConfirm, setShowNextConfirm] = useState(false);
+  const [nextChapterTarget, setNextChapterTarget] = useState(null);
+  const [showEndModal, setShowEndModal] = useState(false);
+  const [showFirstModal, setShowFirstModal] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -49,6 +55,17 @@ const NovelReader = () => {
   const [paragraphSpacing, setParagraphSpacing] = useState(1.5);
   const [justifyText, setJustifyText] = useState(true);
   const [showProgress, setShowProgress] = useState(true);
+  const { publicSettings } = useSettingsStore();
+
+  const [autoAdvance, setAutoAdvance] = useState(false);
+
+  useEffect(() => {
+    const gv = publicSettings?.reader_auto_advance;
+    if (gv !== undefined && gv !== null) {
+      const val = gv === true || gv === 'true';
+      setAutoAdvance(val);
+    }
+  }, [publicSettings]);
 
   useEffect(() => {
     loadChapter();
@@ -174,6 +191,7 @@ const NovelReader = () => {
       setParagraphSpacing(prefs.paragraphSpacing || 1.5);
       setJustifyText(prefs.justifyText !== false);
       setShowProgress(prefs.showProgress !== false);
+      setAutoAdvance(prefs.autoAdvance === true || prefs.autoAdvance === 'true');
     }
   };
 
@@ -187,6 +205,7 @@ const NovelReader = () => {
       paragraphSpacing,
       justifyText,
       showProgress
+      , autoAdvance
     };
     localStorage.setItem('novelReaderPreferences', JSON.stringify(prefs));
     toast.success('Preferências salvas');
@@ -257,16 +276,22 @@ const NovelReader = () => {
     if (prev) {
       navigate(`/novel/${novelId}/chapter/${prev.id}`);
     } else {
-      toast('Primeiro capítulo');
+      setShowFirstModal(true);
     }
   };
 
   const nextChapter = () => {
     const { next } = getAdjacentChapters();
     if (next) {
-      navigate(`/novel/${novelId}/chapter/${next.id}`);
+      if (autoAdvance) {
+        navigate(`/novel/${novelId}/chapter/${next.id}`);
+      } else {
+        // Show confirm modal before navigating
+        setNextChapterTarget(next.id);
+        setShowNextConfirm(true);
+      }
     } else {
-      toast('Último capítulo');
+      setShowEndModal(true);
     }
   };
 
@@ -304,6 +329,46 @@ const NovelReader = () => {
 
   return (
     <div className={`min-h-screen ${themeClasses[theme]} transition-colors duration-300`}>
+      {/* Next / End Modals */}
+      <Modal
+        isOpen={showNextConfirm}
+        onClose={() => setShowNextConfirm(false)}
+        title="Ir para o próximo capítulo?"
+        size="sm"
+      >
+        <p className="mb-4">Deseja abrir o próximo capítulo agora?</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setShowNextConfirm(false)}>Cancelar</Button>
+          <Button onClick={() => {
+            setShowNextConfirm(false);
+            if (nextChapterTarget) navigate(`/novel/${novelId}/chapter/${nextChapterTarget}`);
+          }}>Ir ao próximo</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={showEndModal}
+        onClose={() => setShowEndModal(false)}
+        title="Fim dos capítulos"
+        size="sm"
+      >
+        <p className="mb-4">Você chegou ao fim dos capítulos desta novel.</p>
+        <div className="flex justify-end">
+          <Button onClick={() => setShowEndModal(false)}>Ok</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={showFirstModal}
+        onClose={() => setShowFirstModal(false)}
+        title="Primeiro capítulo"
+        size="sm"
+      >
+        <p className="mb-4">Você já está no primeiro capítulo desta novel.</p>
+        <div className="flex justify-end">
+          <Button onClick={() => setShowFirstModal(false)}>Ok</Button>
+        </div>
+      </Modal>
       {/* Progress Bar */}
       {showProgress && (
         <div className="fixed top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 z-50">
@@ -561,6 +626,19 @@ const NovelReader = () => {
                     className="w-4 h-4 rounded"
                   />
                   <span className="text-sm font-medium">Mostrar barra de progresso</span>
+                </label>
+              </div>
+
+              {/* Auto Advance */}
+              <div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={autoAdvance}
+                    onChange={(e) => setAutoAdvance(e.target.checked)}
+                    className="w-4 h-4 rounded"
+                  />
+                  <span className="text-sm font-medium">Avançar automaticamente para próximo capítulo</span>
                 </label>
               </div>
 

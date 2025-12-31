@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { LogIn, Mail, Lock, Eye, EyeOff, BookOpen } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff, BookOpen, Chrome } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
 import Input from '../components/common/Input';
@@ -10,6 +10,7 @@ import Button from '../components/common/Button';
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const { login } = useAuthStore();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -26,6 +27,47 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleLogin = async (credential) => {
+    try {
+      setGoogleLoading(true);
+      // Enviar o token JWT do Google para o backend
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ googleToken: credential })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao fazer login com Google');
+      }
+
+      // Salvar token e fazer login
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      toast.success('Login com Google realizado!');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message || 'Erro ao fazer login com Google');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  // Inicializar Google Sign-In
+  React.useEffect(() => {
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: (response) => handleGoogleLogin(response.credential)
+      });
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex">
@@ -154,6 +196,28 @@ const Login = () => {
                 <span className="px-2 bg-white text-gray-500 dark:bg-gray-900 dark:text-gray-400">ou</span>
               </div>
             </div>
+
+            {/* Google Login Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (window.google) {
+                  window.google.accounts.id.renderButton(
+                    document.getElementById('google-signin-button'),
+                    { theme: 'outline', size: 'large', width: '100%' }
+                  );
+                  document.getElementById('google-signin-button').querySelector('div').click();
+                }
+              }}
+              disabled={googleLoading}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Chrome className="w-5 h-5" />
+              {googleLoading ? 'Conectando...' : 'Entrar com Google'}
+            </button>
+
+            {/* Hidden Google Sign-In Container */}
+            <div id="google-signin-button" className="hidden"></div>
 
             {/* Register Link */}
             <div className="text-center">

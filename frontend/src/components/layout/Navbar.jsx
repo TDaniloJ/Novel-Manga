@@ -51,6 +51,9 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
+            <Link to="/rankings" className="text-gray-700 hover:text-primary-600 font-medium transition dark:text-gray-300 dark:hover:text-primary-400">
+              Rankings
+            </Link>
             <Link 
               to="/mangas" 
               className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition"

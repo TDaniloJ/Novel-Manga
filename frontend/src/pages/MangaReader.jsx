@@ -17,9 +17,11 @@ import toast from 'react-hot-toast';
 import { mangaService } from '../services/mangaService';
 import { readingHistoryService } from '../services/readingHistoryService';
 import { useAuthStore } from '../store/authStore';
+import { useSettingsStore } from '../store/settingsStore';
 import { getImageUrl } from '../utils/formatters';
 import Loading from '../components/common/Loading';
 import Button from '../components/common/Button';
+import Modal from '../components/common/Modal';
 
 const MangaReader = () => {
   const { mangaId, chapterId } = useParams();
@@ -43,9 +45,20 @@ const MangaReader = () => {
   const [backgroundColor, setBackgroundColor] = useState(
     localStorage.getItem('mangaBgColor') || 'black'
   );
+  const { publicSettings } = useSettingsStore();
+
   const [autoAdvance, setAutoAdvance] = useState(
     localStorage.getItem('mangaAutoAdvance') === 'true'
   );
+
+  // Override with global public setting when available
+  useEffect(() => {
+    const gv = publicSettings?.reader_auto_advance;
+    if (gv !== undefined && gv !== null) {
+      const val = gv === true || gv === 'true';
+      setAutoAdvance(val);
+    }
+  }, [publicSettings]);
   const [preloadPages, setPreloadPages] = useState(3);
 
   // Fullscreen
@@ -56,6 +69,11 @@ const MangaReader = () => {
 
   // ✅ ADICIONE ESTE ESTADO PARA PÁGINAS
   const [pages, setPages] = useState([]);
+  const [chapters, setChapters] = useState([]);
+  const [currentChapterIndex, setCurrentChapterIndex] = useState(-1);
+  const [showNextConfirm, setShowNextConfirm] = useState(false);
+  const [nextChapterTarget, setNextChapterTarget] = useState(null);
+  const [showEndModal, setShowEndModal] = useState(false);
 
   useEffect(() => {
     loadChapter();
@@ -111,6 +129,19 @@ const MangaReader = () => {
       setPages(pagesData);
       setChapter(chapterData);
       setCurrentPage(0);
+
+      // Carregar lista de capítulos do mangá para navegação entre capítulos
+      try {
+        const chaptersData = await mangaService.getMangaChapters(mangaId);
+        const list = chaptersData.chapters || [];
+        setChapters(list);
+        const idx = list.findIndex(c => String(c.id) === String(chapterId));
+        setCurrentChapterIndex(idx);
+      } catch (err) {
+        console.warn('Não foi possível carregar lista de capítulos:', err?.message || err);
+        setChapters([]);
+        setCurrentChapterIndex(-1);
+      }
       
       if (pagesData.length === 0) {
         toast.error('Este capítulo não possui páginas');
@@ -155,8 +186,21 @@ const MangaReader = () => {
   const nextPage = useCallback(() => {
     if (pages && pages.length > 0 && currentPage < pages.length - 1) {
       setCurrentPage(prev => prev + 1);
-    } else if (autoAdvance) {
-      toast.success('Fim do capítulo!');
+    } else {
+      // Fim do capítulo
+      const hasNextChapter = chapters && currentChapterIndex >= 0 && currentChapterIndex < chapters.length - 1;
+      if (hasNextChapter) {
+        const nextChapter = chapters[currentChapterIndex + 1];
+        if (autoAdvance) {
+          navigate(`/manga/${mangaId}/chapter/${nextChapter.id}`);
+        } else {
+          setNextChapterTarget(nextChapter.id);
+          setShowNextConfirm(true);
+        }
+      } else {
+        // Não há próximo capítulo
+        setShowEndModal(true);
+      }
     }
   }, [currentPage, pages, autoAdvance]);
 
@@ -165,6 +209,53 @@ const MangaReader = () => {
       setCurrentPage(prev => prev - 1);
     }
   }, [currentPage]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e) => {
+    // Ignore when settings or chapter list are open or when typing in inputs
+    if (showSettings || showChapterList) return;
+    const tag = e.target?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+
+    // Normalize keys
+    const key = e.key;
+    const tp = pages ? pages.length : 0;
+
+    if (key === 'ArrowRight' || key === 'Right' || e.code === 'Space') {
+      e.preventDefault();
+      nextPage();
+      return;
+    }
+
+    if (key === 'ArrowLeft' || key === 'Left') {
+      e.preventDefault();
+      prevPage();
+      return;
+    }
+
+    if (key === 'Home') {
+      e.preventDefault();
+      setCurrentPage(0);
+      return;
+    }
+
+    if (key === 'End') {
+      e.preventDefault();
+      setCurrentPage(tp > 0 ? tp - 1 : 0);
+      return;
+    }
+
+    if (key === 'f' || key === 'F') {
+      e.preventDefault();
+      toggleFullscreen();
+      return;
+    }
+  }, [showSettings, showChapterList, nextPage, prevPage, pages]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -231,6 +322,35 @@ const MangaReader = () => {
         }
       }}
     >
+      {/* Modals */}
+      <Modal
+        isOpen={showNextConfirm}
+        onClose={() => setShowNextConfirm(false)}
+        title="Ir para o próximo capítulo?"
+        size="sm"
+      >
+        <p className="mb-4">Deseja abrir o próximo capítulo agora?</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setShowNextConfirm(false)}>Cancelar</Button>
+          <Button onClick={() => {
+            setShowNextConfirm(false);
+            if (nextChapterTarget) navigate(`/manga/${mangaId}/chapter/${nextChapterTarget}`);
+          }}>Ir ao próximo</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={showEndModal}
+        onClose={() => setShowEndModal(false)}
+        title="Fim dos capítulos"
+        size="sm"
+      >
+        <p className="mb-4">Você chegou ao fim dos capítulos deste mangá.</p>
+        <div className="flex justify-end">
+          <Button onClick={() => setShowEndModal(false)}>Ok</Button>
+        </div>
+      </Modal>
+
       {/* Top Controls */}
       <div 
         className={`fixed top-0 left-0 right-0 bg-gradient-to-b from-black/90 to-transparent p-4 z-50 transition-all duration-300 ${

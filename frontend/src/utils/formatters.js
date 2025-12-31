@@ -17,13 +17,16 @@ export const formatDateTime = (date) => {
 };
 
 export const formatNumber = (num) => {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
+  if (!num && num !== 0) return '0';
+  const number = Number(num);
+  if (isNaN(number)) return '0';
+  if (number >= 1000000) {
+    return (number / 1000000).toFixed(1) + 'M';
   }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
+  if (number >= 1000) {
+    return (number / 1000).toFixed(1) + 'K';
   }
-  return num.toString();
+  return number.toString();
 };
 
 export const getImageUrl = (path) => {

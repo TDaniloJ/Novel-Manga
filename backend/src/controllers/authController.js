@@ -532,3 +532,162 @@ exports.deleteAccount = async (req, res) => {
     res.status(500).json({ error: 'Erro ao excluir conta' });
   }
 };
+
+// 🔐 RECUPERAÇÃO DE SENHA
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validar email
+    if (!email) {
+      return res.status(400).json({ error: 'Email é obrigatório' });
+    }
+
+    // Buscar usuário
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      // Não revelar se email existe (por segurança)
+      return res.status(200).json({ 
+        message: 'Se o email existe, um link de recuperação foi enviado' 
+      });
+    }
+
+    // Gerar token de recuperação
+    const resetToken = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // TODO: Enviar email com link de recuperação
+    // const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    // await sendEmail(email, 'Recuperar Senha', `Link: ${resetLink}`);
+    
+    console.log('📧 Email de recuperação deveria ser enviado para:', email);
+    console.log('🔗 Token:', resetToken);
+
+    res.status(200).json({ 
+      message: 'Se o email existe, um link de recuperação foi enviado' 
+    });
+  } catch (error) {
+    console.error('Erro ao solicitar recuperação de senha:', error);
+    res.status(500).json({ error: 'Erro ao processar solicitação' });
+  }
+};
+
+// 🔐 REDEFINIR SENHA
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: 'Token e senha são obrigatórios' });
+    }
+
+    // Verificar token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      return res.status(401).json({ error: 'Token inválido ou expirado' });
+    }
+
+    // Buscar usuário
+    const user = await User.findByPk(decoded.id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    // Validar nova senha
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'Senha deve ter no mínimo 6 caracteres' });
+    }
+
+    // Hash da nova senha
+    const salt = await bcrypt.genSalt(10);
+    user.password_hash = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.json({ message: 'Senha redefinida com sucesso' });
+  } catch (error) {
+    console.error('Erro ao redefinir senha:', error);
+    res.status(500).json({ error: 'Erro ao redefinir senha' });
+  }
+};
+
+// 🔐 LOGIN COM GOOGLE
+exports.googleLogin = async (req, res) => {
+  try {
+    const { googleToken } = req.body;
+
+    if (!googleToken) {
+      return res.status(400).json({ error: 'Token do Google é obrigatório' });
+    }
+
+    // Verificar token com Google (em produção, você deveria verificar com Google)
+    // Para teste, você pode decodificar manualmente ou usar biblioteca google-auth-library
+    let decoded;
+    try {
+      // TODO: Implementar verificação real com Google
+      // const ticket = await client.verifyIdToken({
+      //   idToken: googleToken,
+      //   audience: process.env.GOOGLE_CLIENT_ID
+      // });
+      // decoded = ticket.getPayload();
+
+      // Simulação para testes - você precisa instalar @google-cloud/identity-toolkit ou similar
+      decoded = jwt.decode(googleToken);
+      if (!decoded) {
+        return res.status(401).json({ error: 'Token inválido' });
+      }
+    } catch (error) {
+      console.error('Erro ao verificar token do Google:', error);
+      return res.status(401).json({ error: 'Falha ao validar token do Google' });
+    }
+
+    // Extrair dados do token
+    const { email, name, picture } = decoded;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email não encontrado no token' });
+    }
+
+    // Buscar ou criar usuário
+    let user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      // Criar novo usuário com dados do Google
+      const username = name ? name.replace(/\s+/g, '_').toLowerCase() : email.split('@')[0];
+      
+      user = await User.create({
+        username,
+        email,
+        password_hash: await bcrypt.hash(Math.random().toString(36), 10), // Senha aleatória
+        avatar_url: picture || null,
+        role: 'reader'
+      });
+    } else if (picture && !user.avatar_url) {
+      // Atualizar avatar se não tiver
+      user.avatar_url = picture;
+      await user.save();
+    }
+
+    // Gerar token
+    const token = generateToken(user.id);
+
+    res.json({
+      message: 'Login com Google realizado com sucesso',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        avatar_url: user.avatar_url
+      },
+      token
+    });
+  } catch (error) {
+    console.error('Erro ao fazer login com Google:', error);
+    res.status(500).json({ error: 'Erro ao fazer login com Google' });
+  }
+};

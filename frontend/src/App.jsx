@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
@@ -13,6 +13,8 @@ import AdminLayout from './components/layout/AdminLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Forgot from './pages/Forgot';
+import ResetPassword from './pages/ResetPassword';
 import MangaList from './pages/MangaList';
 import MangaDetail from './pages/MangaDetail';
 import MangaReader from './pages/MangaReader';
@@ -27,6 +29,7 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
+import Rankings from './pages/Rankings';
 
 // Admin Pages
 import Dashboard from './pages/admin/Dashboard';
@@ -40,6 +43,9 @@ import UserManagement from './pages/admin/UserManagement';
 import MangaChapterManager from './pages/admin/MangaChapterManager';
 import NovelChapterManager from './pages/admin/NovelChapterManager';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import Settings from './pages/admin/Settings';
+
+import { useSettingsStore } from './store/settingsStore';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false, uploaderOnly = false }) => {
@@ -72,6 +78,13 @@ const Layout = ({ children }) => (
 );
 
 function App() {
+
+  const { loadPublicSettings } = useSettingsStore();
+
+  useEffect(() => {
+    loadPublicSettings();
+  }, []);
+
   return (
     <ThemeProvider>
       <Router>
@@ -111,10 +124,13 @@ function App() {
           <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
           <Route path="/faq" element={<Layout><FAQ /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/rankings" element={<Layout><Rankings /></Layout>} />
 
           {/* Auth Routes without Layout */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<Forgot />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Reader Routes without Layout */}
           <Route path="/manga/:mangaId/chapter/:chapterId" element={<MangaReader />} />
@@ -177,6 +193,7 @@ function App() {
             <Route path="novels/:id/edit" element={<NovelForm />} />
             <Route path="novels/:id/chapters" element={<NovelChapterManager />} />
             <Route path="genres" element={<GenreManagement />} />
+            <Route path="settings" element={<Settings />} />
             
             <Route
               path="users"

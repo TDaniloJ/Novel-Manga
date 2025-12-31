@@ -14,6 +14,7 @@ import {
   Moon,
   Sun
 } from 'lucide-react';
+import { Settings as SettingsIcon } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import ThemeToggle from '../common/ThemeToggle';
 
@@ -30,6 +31,7 @@ const AdminLayout = () => {
     { path: '/admin/novels', icon: FileText, label: 'Novels' },
     { path: '/admin/genres', icon: Tag, label: 'Gêneros' },
     { path: '/admin/users', icon: Users, label: 'Usuários', adminOnly: true },
+    { path: '/admin/settings', icon: SettingsIcon, label: 'Configurações', adminOnly: true },
   ];
 
   const handleLogout = () => {

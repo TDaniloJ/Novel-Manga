@@ -10,7 +10,8 @@
     "create-admin": "node create-admin.js",
     "migrate": "sequelize-cli db:migrate",
     "migrate:undo": "sequelize-cli db:migrate:undo",
-    "seed": "sequelize-cli db:seed:all"
+    "seed": "sequelize-cli db:seed:all",
+    "seed-settings": "node -e \"require('./src/utils/seedSettings')().then(() => process.exit(0))\""
   },
   "keywords": [],
   "author": "",

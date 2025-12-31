@@ -21,6 +21,8 @@ const aiRoutes = require('./routes/aiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const worldbuildingRoutes = require('./routes/worldbuildingRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const rankingRoutes = require('./routes/rankingRoutes');
 
 const app = express();
 
@@ -51,6 +53,8 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/worldbuilding', worldbuildingRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/rankings', rankingRoutes);
 
 // ROTA DE TESTE
 app.get('/', (req, res) => {
